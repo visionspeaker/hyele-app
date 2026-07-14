@@ -492,16 +492,39 @@
     document.getElementById('detail-body').innerHTML='<div class="ok-wrap"><div style="width:66px;height:66px;border-radius:50%;background:#eaf6e4;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="34" height="34" fill="none" stroke="#1aa63a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18l7 7 14-15"/></svg></div><div style="font-size:18px;font-weight:800;">신청이 접수되었습니다</div><div style="font-size:13px;color:var(--sub);margin-top:8px;line-height:1.6;">입력하신 내용이 구글 스프레드시트에<br>저장되었습니다.</div><button class="subbtn" style="width:auto;padding:12px 26px;margin-top:24px;" onclick="closeDetail()">확인</button></div>';
   }
 
-  // 카운터 카운트업
-  function countUp(el,target,ms){
-    const t=+new Date, step=()=>{
-      const p=Math.min(1,(new Date-t)/ms);
-      el.textContent=Math.round(target*(1-Math.pow(1-p,3))).toLocaleString();
-      if(p<1)requestAnimationFrame(step);
-    };step();
-  }
-  countUp(document.getElementById('cnt-today'),27,900);
-  countUp(document.getElementById('cnt-total'),4138,1200);
+  // 실제 방문 카운터 (Abacus 무료 카운터 API · 전역 집계)
+  (function(){
+    var NS='hyele-emp-app';
+    var BASE='https://abacus.jasoncameron.dev/';
+    function fmt(n){return Number(n).toLocaleString();}
+    function tkey(){var d=new Date();return 'd-'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');}
+    function animate(el,target){
+      target=Number(target)||0; var start=+new Date, ms=900;
+      (function step(){
+        var p=Math.min(1,(new Date-start)/ms);
+        el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,3))));
+        if(p<1)requestAnimationFrame(step);
+      })();
+    }
+    function counter(key, elId){
+      var el=document.getElementById(elId); if(!el) return;
+      var flag='cnt_seen_'+key;
+      var seen=false; try{seen=!!sessionStorage.getItem(flag);}catch(e){}
+      var op= seen ? 'get' : 'hit';
+      fetch(BASE+op+'/'+NS+'/'+key).then(function(r){return r.json();}).then(function(d){
+        if(op==='hit'){try{sessionStorage.setItem(flag,'1');}catch(e){}}
+        var v=d && (d.value!=null ? d.value : d.count);
+        if(v==null) throw 0;
+        try{localStorage.setItem('cnt_val_'+key, v);}catch(e){}
+        animate(el, v);
+      }).catch(function(){
+        var c=null; try{c=localStorage.getItem('cnt_val_'+key);}catch(e){}
+        el.textContent=(c!=null)?fmt(c):'–';
+      });
+    }
+    counter('total','cnt-total');
+    counter(tkey(),'cnt-today');
+  })();
 </script>
 <script>
   if ('serviceWorker' in navigator) {
