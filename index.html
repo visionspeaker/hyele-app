@@ -249,10 +249,10 @@
         <div class="icon t-blue"><svg class="i"><use href="#i-file"/></svg></div>
         <div class="title">증명서 발급 신청</div><div class="desc">재직·경력 등 증명서</div>
       </div>
-      <a class="card" href="https://docs.google.com/spreadsheets/d/1YqJAuqVe7ZmFAbXpone0iXFjJStiTljA2t2ctweJSPg/edit?usp=sharing" target="_blank" rel="noopener">
+      <div class="card" role="button" tabindex="0" onclick="openForm('mulpum')">
         <div class="icon t-amber"><svg class="i"><use href="#i-cart"/></svg></div>
         <div class="title">물품 구매 요청</div><div class="desc">비품 구매 신청</div>
-      </a>
+      </div>
       <div class="card" role="button" tabindex="0" onclick="openForm('seoksik')">
         <div class="icon t-teal"><svg class="i"><use href="#i-bowl"/></svg></div>
         <div class="title">석식 신청</div><div class="desc">저녁 식사 신청</div>
@@ -354,7 +354,15 @@
   function closeDetail(){document.getElementById('detail').classList.remove('open');}
 
   const FORMS = {
-   jeungmyeong:{title:'증명서 발급 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSeUeaeFo-TYZZ5gUtgSB-J4wdGSccuwExQ_4y70X9RIBHwnzA/formResponse',
+   mulpum:{title:'물품 구매 요청',action:'https://docs.google.com/forms/d/e/1FAIpQLSd21n7XY9TU7mGC1WR7CRvahH6SbdAycrwI9hClox-GxS6jCQ/formResponse',
+     fields:[
+       {e:'entry.432885470',t:'select',l:'부서',r:1,o:['경영지원부','설계부','품질보증부','부설연구소','신재생사업부','신사업부','영업부','수배전영업부','서울사무소','구조설계']},
+       {e:'entry.1510892757',t:'text',l:'신청자',r:1},
+       {e:'entry.663858394',t:'text',l:'물품명',r:1},
+       {e:'entry.327536592',t:'text',l:'수량',r:1,ph:'예: 2개'},
+       {e:'entry.1492288375',t:'text',l:'모델 링크',r:0,ph:'구매 사이트 링크 (선택)'}
+     ]},
+      jeungmyeong:{title:'증명서 발급 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSeUeaeFo-TYZZ5gUtgSB-J4wdGSccuwExQ_4y70X9RIBHwnzA/formResponse',
      note:'· 발급 기한을 반드시 기재해 주세요  · 증명서는 복수 선택 가능  · 원천징수영수증은 기타 요청사항에 발급년도 기재',
      fields:[
        {e:'entry.696604306',t:'text',l:'신청자',r:1},
