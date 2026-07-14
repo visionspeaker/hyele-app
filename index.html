@@ -25,7 +25,7 @@
     background:var(--bg);
     background-image:linear-gradient(180deg,#e7f5e4 0,var(--bg) 230px);
     background-repeat:no-repeat;
-    max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:118px;
+    max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:118px;overflow-x:hidden;
   }
   svg.i{width:22px;height:22px;stroke:currentColor;stroke-width:1.9;
     stroke-linecap:round;stroke-linejoin:round;fill:none;}
@@ -59,7 +59,11 @@
   /* 본문 */
   main{padding:14px 16px 6px;}
   .page{display:none;}
-  .page.active{display:block;animation:fade 0.25s ease;}
+  .page.active{display:block;}
+  .page.sl-next{animation:slNext .3s ease;}
+  .page.sl-prev{animation:slPrev .3s ease;}
+  @keyframes slNext{from{transform:translateX(100%);opacity:.35;}to{transform:none;opacity:1;}}
+  @keyframes slPrev{from{transform:translateX(-100%);opacity:.35;}to{transform:none;opacity:1;}}
   @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
   .label{font-size:15px;font-weight:800;color:var(--label);margin:14px 4px 11px;}
   .label:first-child{margin-top:2px;}
@@ -327,11 +331,18 @@
 </nav>
 
 <script>
-  function switchTab(btn){
+  function switchTab(btn, dir){
+    var pages=['page-home','page-safety'];
+    var cur=document.querySelector('.page.active');
+    var ci=cur?pages.indexOf(cur.id):0;
+    var ni=pages.indexOf(btn.dataset.page);
+    if(dir===undefined) dir = ni>ci?1:(ni<ci?-1:0);
     document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active','sl-next','sl-prev'));
     btn.classList.add('active');
-    document.getElementById(btn.dataset.page).classList.add('active');
+    var np=document.getElementById(btn.dataset.page);
+    np.classList.add('active');
+    if(dir>0)np.classList.add('sl-next'); else if(dir<0)np.classList.add('sl-prev');
     window.scrollTo(0,0);
   }
   // 좌우 스와이프로 탭 전환 (홈 <-> 안전보건)
@@ -522,38 +533,29 @@
     document.getElementById('detail-body').innerHTML='<div class="ok-wrap"><div style="width:66px;height:66px;border-radius:50%;background:#eaf6e4;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="34" height="34" fill="none" stroke="#1aa63a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18l7 7 14-15"/></svg></div><div style="font-size:18px;font-weight:800;">신청이 접수되었습니다</div><div style="font-size:13px;color:var(--sub);margin-top:8px;line-height:1.6;">입력하신 내용이 구글 스프레드시트에<br>저장되었습니다.</div><button class="subbtn" style="width:auto;padding:12px 26px;margin-top:24px;" onclick="closeDetail()">확인</button></div>';
   }
 
-  // 실제 방문 카운터 (Abacus 무료 카운터 API · 전역 집계)
+  // 실제 방문 카운터 (Abacus · TOTAL과 TODAY를 같은 세션에서 함께 집계)
   (function(){
-    var NS='hyele-emp-app';
+    var NS='hyele-emp-2026';
     var BASE='https://abacus.jasoncameron.dev/';
     function fmt(n){return Number(n).toLocaleString();}
-    function tkey(){var d=new Date();return 'd-'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');}
+    function tkey(){var d=new Date();return 'd'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');}
     function animate(el,target){
       target=Number(target)||0; var start=+new Date, ms=900;
-      (function step(){
-        var p=Math.min(1,(new Date-start)/ms);
-        el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,3))));
-        if(p<1)requestAnimationFrame(step);
-      })();
+      (function step(){var p=Math.min(1,(new Date-start)/ms);el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(step);})();
     }
-    function counter(key, elId){
-      var el=document.getElementById(elId); if(!el) return;
-      var flag='cnt_seen_'+key;
-      var seen=false; try{seen=!!sessionStorage.getItem(flag);}catch(e){}
-      var op= seen ? 'get' : 'hit';
-      fetch(BASE+op+'/'+NS+'/'+key).then(function(r){return r.json();}).then(function(d){
-        if(op==='hit'){try{sessionStorage.setItem(flag,'1');}catch(e){}}
-        var v=d && (d.value!=null ? d.value : d.count);
-        if(v==null) throw 0;
-        try{localStorage.setItem('cnt_val_'+key, v);}catch(e){}
-        animate(el, v);
-      }).catch(function(){
-        var c=null; try{c=localStorage.getItem('cnt_val_'+key);}catch(e){}
-        el.textContent=(c!=null)?fmt(c):'–';
-      });
-    }
-    counter('total','cnt-total');
-    counter(tkey(),'cnt-today');
+    function one(op,key){return fetch(BASE+op+'/'+NS+'/'+key).then(function(r){return r.json();}).then(function(d){return d&&(d.value!=null?d.value:d.count);});}
+    var elT=document.getElementById('cnt-total'), elD=document.getElementById('cnt-today');
+    var day=tkey(), sflag='cnt2_'+day, first=false;
+    try{first=!sessionStorage.getItem(sflag);}catch(e){}
+    var op=first?'hit':'get';
+    Promise.all([one(op,'total'), one(op,day)]).then(function(r){
+      if(first){try{sessionStorage.setItem(sflag,'1');}catch(e){}}
+      if(r[0]!=null){try{localStorage.setItem('cv_total',r[0]);}catch(e){} if(elT)animate(elT,r[0]);}
+      if(r[1]!=null){try{localStorage.setItem('cv_day',r[1]);}catch(e){} if(elD)animate(elD,r[1]);}
+    }).catch(function(){
+      var ct=null,cd=null; try{ct=localStorage.getItem('cv_total');cd=localStorage.getItem('cv_day');}catch(e){}
+      if(elT)elT.textContent=ct!=null?fmt(ct):'–'; if(elD)elD.textContent=cd!=null?fmt(cd):'–';
+    });
   })();
 </script>
 <script>
