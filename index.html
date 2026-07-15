@@ -25,7 +25,7 @@
     background:var(--bg);
     background-image:linear-gradient(180deg,#e7f5e4 0,var(--bg) 230px);
     background-repeat:no-repeat;
-    max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:118px;overflow-x:hidden;
+    max-width:480px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;
   }
   svg.i{width:22px;height:22px;stroke:currentColor;stroke-width:1.9;
     stroke-linecap:round;stroke-linejoin:round;fill:none;}
@@ -57,8 +57,11 @@
   .hero .wm{position:absolute;right:-14px;bottom:-22px;width:140px;height:140px;
     opacity:.22;object-fit:contain;}
   /* 본문 */
-  main{padding:14px 16px 6px;}
-  .page{display:none;}
+  main.viewport{flex:1 1 auto;overflow:hidden;position:relative;padding:0;}
+  .track{display:flex;height:100%;will-change:transform;}
+  .hero{flex:0 0 auto;}
+  .appfooter{flex:0 0 auto;}
+  .page{flex:0 0 100%;width:100%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px 16px;}
   .page.active{display:block;}
   .page.sl-next{animation:slNext .3s ease;}
   .page.sl-prev{animation:slPrev .3s ease;}
@@ -113,9 +116,8 @@
   .notice li .d{font-size:11px;font-weight:800;color:var(--g);
     background:#eaf6e4;padding:2px 8px;border-radius:10px;}
   /* 카운터 */
-  .counter{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);
-    width:100%;max-width:480px;background:#fff;border-top:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;gap:26px;padding:9px 0;z-index:90;}
+  .counter{background:#fff;border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;gap:26px;padding:9px 0;}
   .counter .c{display:flex;align-items:baseline;gap:7px;}
   .counter .c span{font-size:10.5px;font-weight:800;letter-spacing:1px;color:var(--label);}
   .counter .c b{font-size:16px;font-weight:800;color:var(--g-dark);font-variant-numeric:tabular-nums;}
@@ -135,8 +137,7 @@
   .placeholder{background:#fff;border:1px dashed #d7e4d3;border-radius:14px;
     padding:22px 16px;color:var(--sub);font-size:13px;line-height:1.6;}
   /* 탭바 */
-  .tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
-    background:#fff;border-top:1px solid var(--line);display:flex;z-index:100;
+  .tabbar{background:#fff;border-top:1px solid var(--line);display:flex;
     box-shadow:0 -2px 10px rgba(31,45,33,0.05);}
   .tabbar button{flex:1;background:none;border:none;padding:8px 0 10px;cursor:pointer;
     display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--sub);
@@ -230,7 +231,8 @@
   <div class="eyeline">HANYANG ELECTRIC STAFF ONLY</div>
 </div>
 
-<main>
+<main class="viewport">
+  <div class="track">
   <section class="page active" id="page-home">
     <div class="grid">
       <div class="card wide" role="button" tabindex="0" onclick="openDetail('chwieop')">
@@ -311,13 +313,23 @@
     </div>
     </div>
   </section>
+  </div>
 </main>
 
+<div class="appfooter">
 <!-- 투데이·토탈 카운터 -->
 <div class="counter">
   <div class="c"><span>TODAY</span><b id="cnt-today">0</b></div>
   <div class="sep"></div>
   <div class="c"><span>TOTAL</span><b id="cnt-total">0</b></div>
+</div>
+<!-- 탭바 (홈 / 안전보건) -->
+<nav class="tabbar">
+  <button class="active" data-page="page-home" onclick="switchTab(this)">
+    <svg class="i"><use href="#i-home"/></svg>홈</button>
+  <button data-page="page-safety" onclick="switchTab(this)">
+    <svg class="i"><use href="#i-shield"/></svg>안전보건</button>
+</nav>
 </div>
 
 <!-- 상세 -->
@@ -326,49 +338,52 @@
   <div class="detail-body" id="detail-body"></div>
 </div>
 
-<!-- 탭바 (홈 / 안전보건) -->
-<nav class="tabbar">
-  <button class="active" data-page="page-home" onclick="switchTab(this)">
-    <svg class="i"><use href="#i-home"/></svg>홈</button>
-  <button data-page="page-safety" onclick="switchTab(this)">
-    <svg class="i"><use href="#i-shield"/></svg>안전보건</button>
-</nav>
+
 
 <script>
-  function switchTab(btn, dir){
-    var pages=['page-home','page-safety'];
-    var cur=document.querySelector('.page.active');
-    var ci=cur?pages.indexOf(cur.id):0;
-    var ni=pages.indexOf(btn.dataset.page);
-    if(dir===undefined) dir = ni>ci?1:(ni<ci?-1:0);
-    document.querySelectorAll('.tabbar button').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active','sl-next','sl-prev'));
-    btn.classList.add('active');
-    var np=document.getElementById(btn.dataset.page);
-    np.classList.add('active');
-    if(dir>0)np.classList.add('sl-next'); else if(dir<0)np.classList.add('sl-prev');
-    window.scrollTo(0,0);
-  }
-  // 좌우 스와이프로 탭 전환 (홈 <-> 안전보건)
+  // 스와이프 페이저 (손가락 따라 이동 · 20% 스냅 · 경계 고무줄 · 탭 클릭 동일 전환)
   (function(){
-    var TABS=['page-home','page-safety'];
-    function curIdx(){var a=document.querySelector('.page.active');return a?Math.max(0,TABS.indexOf(a.id)):0;}
-    function goTo(i){if(i<0||i>=TABS.length)return;var b=document.querySelector('.tabbar button[data-page="'+TABS[i]+'"]');if(b)switchTab(b);}
-    var sx=0,sy=0,st=0,tracking=false;
-    function isBusy(){var d=document.getElementById('detail');return d&&d.classList.contains('open');}
-    document.addEventListener('touchstart',function(e){
-      if(isBusy()){tracking=false;return;}
-      var t=e.changedTouches[0];sx=t.clientX;sy=t.clientY;st=Date.now();tracking=true;
+    var vp=document.querySelector('.viewport');
+    var track=document.querySelector('.track');
+    if(!vp||!track)return;
+    var pages=Array.prototype.slice.call(track.children);
+    var ids=pages.map(function(p){return p.id;});
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('.tabbar button'));
+    var idx=0;
+    function W(){return vp.clientWidth;}
+    function setActive(i){tabs.forEach(function(b){b.classList.toggle('active', ids.indexOf(b.dataset.page)===i);});}
+    function place(anim){track.style.transition=anim?'transform .32s cubic-bezier(.22,.61,.36,1)':'none';track.style.transform='translateX('+(-idx*W())+'px)';}
+    function goTo(i,anim){i=Math.max(0,Math.min(pages.length-1,i));idx=i;setActive(i);place(anim!==false);}
+    window.switchTab=function(btn){goTo(ids.indexOf(btn.dataset.page),true);};
+    window.addEventListener('resize',function(){place(false);});
+    var sx=0,sy=0,drag=null,base=0,on=false,dxCur=0;
+    function busy(){var d=document.getElementById('detail');return d&&d.classList.contains('open');}
+    vp.addEventListener('touchstart',function(e){
+      if(busy()||e.touches.length!==1){on=false;return;}
+      var t=e.touches[0];sx=t.clientX;sy=t.clientY;drag=null;on=true;base=-idx*W();dxCur=0;track.style.transition='none';
     },{passive:true});
-    document.addEventListener('touchend',function(e){
-      if(!tracking)return;tracking=false;if(isBusy())return;
-      var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy,dt=Date.now()-st;
-      if(dt>700)return;
-      if(Math.abs(dx)<55)return;
-      if(Math.abs(dx)<Math.abs(dy)*1.4)return;
-      var i=curIdx();
-      if(dx<0)goTo(i+1); else goTo(i-1);
+    vp.addEventListener('touchmove',function(e){
+      if(!on)return;
+      if(e.touches.length!==1){on=false;place(true);return;}
+      var t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+      if(drag===null){
+        if(Math.abs(dx)>8||Math.abs(dy)>8){drag=Math.abs(dx)>Math.abs(dy);if(!drag){on=false;return;}}
+        else return;
+      }
+      e.preventDefault();
+      var eff=dx;
+      if((idx===0&&dx>0)||(idx===pages.length-1&&dx<0))eff=dx*0.3;
+      dxCur=eff;
+      track.style.transform='translateX('+(base+eff)+'px)';
+    },{passive:false});
+    vp.addEventListener('touchend',function(){
+      if(!on){return;}on=false;if(drag!==true)return;
+      var th=0.2*W();
+      if(dxCur<=-th&&idx<pages.length-1)goTo(idx+1,true);
+      else if(dxCur>=th&&idx>0)goTo(idx-1,true);
+      else place(true);
     },{passive:true});
+    goTo(0,false);
   })();
   const contents = {
     risk:{ title:'위험성평가 결과 공유', html:
