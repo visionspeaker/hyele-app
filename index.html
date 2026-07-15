@@ -151,7 +151,7 @@
   .ff label.fl b{color:#e0645f;font-weight:800;}
   .ff .fi{width:100%;box-sizing:border-box;padding:11px 13px;border:1px solid #e2e9de;border-radius:12px;font-size:14px;font-family:inherit;color:var(--text);background:#fff;outline:none;}
   .ff select.fi{appearance:none;-webkit-appearance:none;}
-  .ff input[type="date"].fi{-webkit-appearance:none;appearance:none;min-width:0;max-width:100%;width:100%;height:44px;}
+  .ff input[type="date"].fi,.ff input[type="datetime-local"].fi{-webkit-appearance:none;appearance:none;min-width:0;max-width:100%;width:100%;height:44px;}
   .ff .fi:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(26,166,58,.13);}
   .ff textarea.fi{min-height:62px;resize:vertical;line-height:1.5;}
   .ff .chips{display:flex;flex-wrap:wrap;gap:8px;}
@@ -473,7 +473,7 @@
      fields:[
        {e:'a_dept',k:'소속',t:'select',l:'소속',r:1,o:['수배전 영업부','수배전 설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','경영지원/자재','한양이앤에스','기타']},
        {e:'a_name',k:'작성자',t:'text',l:'작성자(성명)',r:1},
-       {e:'a_when',k:'사고 발생 일시',t:'text',l:'사고 발생 일시',r:1,ph:'날짜·시간 (대략 기재 가능)'},
+       {e:'a_when',k:'사고 발생 일시',t:'datetime',l:'사고 발생 일시',r:1},
        {e:'a_where',k:'사고 위치',t:'text',l:'사고 위치(어디서)',r:1},
        {e:'a_sit',k:'사고 발생 상황',t:'para',l:'사고 발생 상황(어떤 일을 하다가)',r:1},
        {e:'a_res',k:'사고 발생 결과',t:'para',l:'사고 발생 결과(피해 정도 / 될 뻔한 상황)',r:1},
@@ -499,6 +499,7 @@
       if(f.t==='text')h+='<input class="fi" data-e="'+f.e+'" placeholder="'+esc(f.ph||'')+'">';
       else if(f.t==='para')h+='<textarea class="fi" data-e="'+f.e+'" placeholder="'+esc(f.ph||'')+'"></textarea>';
       else if(f.t==='date')h+='<input class="fi" type="date" data-e="'+f.e+'">';
+      else if(f.t==='datetime')h+='<input class="fi" type="datetime-local" data-e="'+f.e+'">';
       else if(f.t==='select'){h+='<select class="fi" data-e="'+f.e+'"><option value="">선택하세요</option>';f.o.forEach(function(o){h+='<option value="'+esc(o)+'">'+esc(o)+'</option>';});h+='</select>';}
       else if(f.t==='radio'||f.t==='check'){
         h+='<div class="chips" data-group="'+f.e+'" data-multi="'+(f.t==='check'?1:0)+'">';
@@ -508,7 +509,7 @@
         if(f.other)h+='<div class="otherbox" data-otherbox="'+f.e+'"><input class="fi" data-other="'+f.e+'" placeholder="직접 입력"></div>';
       }
       else if(f.t==='photo'){
-        h+='<input type="file" accept="image/*" capture="environment" class="ffphoto-input" data-e="'+f.e+'" style="display:none">';
+        h+='<input type="file" accept="image/*" class="ffphoto-input" data-e="'+f.e+'" style="display:none">';
         h+='<button type="button" class="photo-btn" data-photobtn="'+f.e+'"><svg class="i" style="width:20px;height:20px"><use href="#i-cam"/></svg>사진 촬영 / 선택</button>';
         h+='<div class="photo-prev" data-photoprev="'+f.e+'"></div>';
       }
@@ -598,7 +599,7 @@
       var v='';
       if(f.t==='radio'){ var on=body.querySelector('.chip.on[data-e="'+f.e+'"]'); v=on?on.dataset.v:''; }
       else if(f.t==='check'){ var ons=body.querySelectorAll('.chip.on[data-e="'+f.e+'"]'); v=[].map.call(ons,function(c){return c.dataset.v;}).join(', '); }
-      else { var el=body.querySelector('[data-e="'+f.e+'"]'); v=(el&&el.value||'').trim(); }
+      else { var el=body.querySelector('[data-e="'+f.e+'"]'); v=(el&&el.value||'').trim(); if(f.t==='datetime')v=v.replace('T',' '); }
       if(f.r&&!v) return ffErr(f.l);
       payload[f.k||f.l]=v;
     }
