@@ -162,6 +162,10 @@
   .ff .subbtn{margin-top:22px;width:100%;background:var(--g);color:#fff;border:none;padding:14px;border-radius:14px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:0 6px 16px rgba(26,166,58,.3);}
   .ff .subbtn:active{transform:scale(.99);}
   .ff .savenote{text-align:center;font-size:11px;color:var(--label);margin-top:12px;}
+  .ff .photo-btn{width:100%;padding:13px;border:1px dashed #cbd8c6;border-radius:12px;background:#f6faf3;color:#2f6d3a;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .ff .photo-prev{margin-top:10px;}
+  .ff .photo-prev img{width:100%;border-radius:12px;border:1px solid #e2e9de;display:block;}
+  .ff .photo-prev .rm{margin-top:8px;font-size:12.5px;color:#c0342c;background:none;border:none;cursor:pointer;text-decoration:underline;font-family:inherit;}
   .ok-wrap{text-align:center;padding:52px 24px;}
   /* 방침·목표 문서 */
   .doc{padding:2px 2px 6px;}
@@ -222,6 +226,7 @@
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5"/></symbol>
   <symbol id="i-approve" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="M8.5 13.2l2.2 2.2 4.3-4.4"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></symbol>
 </defs></svg>
 
 <!-- 히어로 -->
@@ -463,16 +468,17 @@
        {e:'entry.1042218872',t:'radio',l:'신청 사유',r:1,o:['신입직원 (입사 후 첫 신청)','옷이 낡음(훼손)'],other:1},
        {e:'entry.899820959',t:'para',l:'기타 업무지원 요청 및 의견',r:0}
      ]},
-   achasago:{title:'아차사고 접수',action:'https://docs.google.com/forms/d/e/1FAIpQLSftF5xKOg2jTGZXVLYhnNUYPdX02ZaO5e3n3BVZHwj-q01PFw/formResponse',
-     note:'아차사고: 다칠 뻔했지만 다치지 않은 상황을 공유해 재해를 예방합니다.',
+   achasago:{title:'아차사고 접수',mode:'gas',action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
+     note:'아차사고: 다칠 뻔했지만 다치지 않은 상황을 공유해 재해를 예방합니다. 현장 사진을 함께 첨부할 수 있습니다.',
      fields:[
-       {e:'entry.554312003',t:'select',l:'소속',r:1,o:['수배전 영업부','수배전 설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','경영지원/자재','한양이앤에스','기타']},
-       {e:'entry.1635958423',t:'text',l:'작성자(성명)',r:1},
-       {e:'entry.233445044',t:'text',l:'사고 발생 일시',r:1,ph:'날짜·시간 (대략 기재 가능)'},
-       {e:'entry.578827009',t:'text',l:'사고 위치(어디서)',r:1},
-       {e:'entry.2034076792',t:'para',l:'사고 발생 상황(어떤 일을 하다가)',r:1},
-       {e:'entry.863015011',t:'para',l:'사고 발생 결과(피해 정도 / 될 뻔한 상황)',r:1},
-       {e:'entry.2091133259',t:'para',l:'사고 예방을 위한 제안',r:0}
+       {e:'a_dept',k:'소속',t:'select',l:'소속',r:1,o:['수배전 영업부','수배전 설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','경영지원/자재','한양이앤에스','기타']},
+       {e:'a_name',k:'작성자',t:'text',l:'작성자(성명)',r:1},
+       {e:'a_when',k:'사고 발생 일시',t:'text',l:'사고 발생 일시',r:1,ph:'날짜·시간 (대략 기재 가능)'},
+       {e:'a_where',k:'사고 위치',t:'text',l:'사고 위치(어디서)',r:1},
+       {e:'a_sit',k:'사고 발생 상황',t:'para',l:'사고 발생 상황(어떤 일을 하다가)',r:1},
+       {e:'a_res',k:'사고 발생 결과',t:'para',l:'사고 발생 결과(피해 정도 / 될 뻔한 상황)',r:1},
+       {e:'a_prev',k:'사고 예방 제안',t:'para',l:'사고 예방을 위한 제안',r:0},
+       {e:'a_photo',k:'photo',t:'photo',l:'현장 사진 (선택)',r:0}
      ]},
    anjeon:{title:'안전용품 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSergqrXAqwlqGuhLlntkjzZWvAKMrICP79hK4VqPE6RbjVkzQ/formResponse',
      fields:[
@@ -501,6 +507,11 @@
         h+='</div>';
         if(f.other)h+='<div class="otherbox" data-otherbox="'+f.e+'"><input class="fi" data-other="'+f.e+'" placeholder="직접 입력"></div>';
       }
+      else if(f.t==='photo'){
+        h+='<input type="file" accept="image/*" capture="environment" class="ffphoto-input" data-e="'+f.e+'" style="display:none">';
+        h+='<button type="button" class="photo-btn" data-photobtn="'+f.e+'"><svg class="i" style="width:20px;height:20px"><use href="#i-cam"/></svg>사진 촬영 / 선택</button>';
+        h+='<div class="photo-prev" data-photoprev="'+f.e+'"></div>';
+      }
     });
     h+='<button class="subbtn" id="ffSub">제출하기</button>';
     h+='<div class="savenote">제출 시 기존 구글 스프레드시트에 자동 저장됩니다</div></div>';
@@ -517,12 +528,26 @@
         }
       });
     });
+    body.querySelectorAll('.photo-btn').forEach(function(btn){
+      var id=btn.dataset.photobtn;
+      var input=body.querySelector('.ffphoto-input[data-e="'+id+'"]');
+      var prev=body.querySelector('[data-photoprev="'+id+'"]');
+      btn.addEventListener('click',function(){input.click();});
+      input.addEventListener('change',function(){
+        var f=input.files&&input.files[0];
+        if(!f){prev.innerHTML='';return;}
+        var u=URL.createObjectURL(f);
+        prev.innerHTML='<img src="'+u+'" alt="미리보기"><button type="button" class="rm">사진 삭제</button>';
+        prev.querySelector('.rm').addEventListener('click',function(){input.value='';prev.innerHTML='';});
+      });
+    });
     document.getElementById('ffSub').addEventListener('click',function(){submitForm(key);});
     document.getElementById('detail').classList.add('open');
   }
   function ffErr(l){alert('필수 항목을 입력/선택해 주세요:\n· '+l);return false;}
   function submitForm(key){
     var F=FORMS[key], body=document.getElementById('detail-body'), data=[];
+    if(F.mode==='gas'){ return submitGas(key); }
     for(var i=0;i<F.fields.length;i++){
       var f=F.fields[i];
       if(f.t==='radio'){
@@ -563,6 +588,34 @@
   }
   function ffSuccess(){
     document.getElementById('detail-body').innerHTML='<div class="ok-wrap"><div style="width:66px;height:66px;border-radius:50%;background:#eaf6e4;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="34" height="34" fill="none" stroke="#1aa63a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18l7 7 14-15"/></svg></div><div style="font-size:18px;font-weight:800;">신청이 접수되었습니다</div><div style="font-size:13px;color:var(--sub);margin-top:8px;line-height:1.6;">입력하신 내용이 구글 스프레드시트에<br>저장되었습니다.</div><button class="subbtn" style="width:auto;padding:12px 26px;margin-top:24px;" onclick="closeDetail()">확인</button></div>';
+  }
+
+  function submitGas(key){
+    var F=FORMS[key], body=document.getElementById('detail-body'), payload={}, photoField=null;
+    for(var i=0;i<F.fields.length;i++){
+      var f=F.fields[i];
+      if(f.t==='photo'){ photoField=f; continue; }
+      var v='';
+      if(f.t==='radio'){ var on=body.querySelector('.chip.on[data-e="'+f.e+'"]'); v=on?on.dataset.v:''; }
+      else if(f.t==='check'){ var ons=body.querySelectorAll('.chip.on[data-e="'+f.e+'"]'); v=[].map.call(ons,function(c){return c.dataset.v;}).join(', '); }
+      else { var el=body.querySelector('[data-e="'+f.e+'"]'); v=(el&&el.value||'').trim(); }
+      if(f.r&&!v) return ffErr(f.l);
+      payload[f.k||f.l]=v;
+    }
+    var btn=document.getElementById('ffSub'); if(btn){btn.disabled=true;btn.textContent='제출 중…';}
+    var fileInput=photoField?body.querySelector('.ffphoto-input[data-e="'+photoField.e+'"]'):null;
+    var file=fileInput&&fileInput.files&&fileInput.files[0];
+    function send(){ fetch(F.action,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}).then(function(){ffSuccess();}).catch(function(){ffSuccess();}); }
+    if(file){ compressImage(file,1600,0.7,function(durl){ var c=durl.indexOf(','); payload.imageBase64=durl.slice(c+1); payload.imageType='image/jpeg'; payload.imageName='achasago_'+Date.now()+'.jpg'; send(); }, send); }
+    else { send(); }
+  }
+  function compressImage(file,maxW,q,ok,fail){
+    try{
+      var url=URL.createObjectURL(file), img=new Image();
+      img.onload=function(){ var w=img.width,h=img.height; if(w>maxW){h=Math.round(h*maxW/w);w=maxW;} var c=document.createElement('canvas'); c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h); URL.revokeObjectURL(url); try{ok(c.toDataURL('image/jpeg',q));}catch(e){fail&&fail();} };
+      img.onerror=function(){fail&&fail();};
+      img.src=url;
+    }catch(e){fail&&fail();}
   }
 
   // 실제 방문 카운터 (Abacus · TOTAL과 TODAY를 같은 세션에서 함께 집계)
