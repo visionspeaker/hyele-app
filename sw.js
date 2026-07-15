@@ -1,4 +1,4 @@
-const CACHE = 'hyele-app-v8';
+const CACHE = 'hyele-app-v9';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './apple-touch-icon-180.png'];
 self.addEventListener('install', e => {
