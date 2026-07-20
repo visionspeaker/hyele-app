@@ -149,6 +149,7 @@
   .ff .note{background:#fff5e9;border:1px solid #f6e2c4;color:#8a5a12;font-size:11.5px;line-height:1.55;padding:11px 13px;border-radius:12px;margin:8px 0 2px;}
   .ff label.fl{display:block;font-size:13px;font-weight:800;color:#3f4d41;margin:16px 2px 8px;}
   .ff label.fl b{color:#e0645f;font-weight:800;}
+  .ff label.fl s{display:block;font-size:10.5px;color:#8a988c;font-weight:400;margin-top:3px;text-decoration:none;}
   .ff .fi{width:100%;box-sizing:border-box;padding:11px 13px;border:1px solid #e2e9de;border-radius:12px;font-size:14px;font-family:inherit;color:var(--text);background:#fff;outline:none;}
   .ff select.fi{appearance:none;-webkit-appearance:none;}
   .ff input[type="date"].fi,.ff input[type="datetime-local"].fi{-webkit-appearance:none;appearance:none;min-width:0;max-width:100%;width:100%;height:44px;}
@@ -472,12 +473,10 @@
      note:'아차사고: 다칠 뻔했지만 다치지 않은 상황을 공유해 재해를 예방합니다. 현장 사진을 함께 첨부할 수 있습니다.',
      fields:[
        {e:'a_dept',k:'소속',t:'select',l:'소속',r:1,o:['수배전 영업부','수배전 설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','경영지원/자재','한양이앤에스','기타']},
-       {e:'a_name',k:'작성자',t:'text',l:'작성자(성명)',r:1},
+       {e:'a_name',k:'제안자',t:'text',l:'제안자',r:1,ph:'성명'},
        {e:'a_when',k:'사고 발생 일시',t:'datetime',l:'사고 발생 일시',r:1},
-       {e:'a_where',k:'사고 위치',t:'text',l:'사고 위치(어디서)',r:1},
-       {e:'a_sit',k:'사고 발생 상황',t:'para',l:'사고 발생 상황(어떤 일을 하다가)',r:1},
-       {e:'a_res',k:'사고 발생 결과',t:'para',l:'사고 발생 결과(피해 정도 / 될 뻔한 상황)',r:1},
-       {e:'a_prev',k:'사고 예방 제안',t:'para',l:'사고 예방을 위한 제안',r:0},
+       {e:'a_detail',k:'세부내용',t:'para',l:'세부내용',s:'어디서 · 어떤 일을 하다가 · 피해 정도 또는 될 뻔한 상황',r:1,ph:'예) 3공장 배전반 앞에서 자재를 옮기다가 바닥 케이블에 발이 걸려 넘어질 뻔했음'},
+       {e:'a_prev',k:'사고 예방 제안',t:'para',l:'사고 예방을 위한 제안',r:0,ph:'예) 통로 케이블 정리 및 덮개 설치'},
        {e:'a_photo',k:'photo',t:'photo',l:'현장 사진 (선택)',r:0}
      ]},
    anjeon:{title:'안전용품 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSergqrXAqwlqGuhLlntkjzZWvAKMrICP79hK4VqPE6RbjVkzQ/formResponse',
@@ -495,7 +494,7 @@
     var h='<div class="ff">';
     if(F.note)h+='<div class="note">'+esc(F.note)+'</div>';
     F.fields.forEach(function(f){
-      h+='<label class="fl">'+esc(f.l)+(f.r?' <b>*</b>':'')+'</label>';
+      h+='<label class="fl">'+esc(f.l)+(f.r?' <b>*</b>':'')+(f.s?'<s>'+esc(f.s)+'</s>':'')+'</label>';
       if(f.t==='text')h+='<input class="fi" data-e="'+f.e+'" placeholder="'+esc(f.ph||'')+'">';
       else if(f.t==='para')h+='<textarea class="fi" data-e="'+f.e+'" placeholder="'+esc(f.ph||'')+'"></textarea>';
       else if(f.t==='date')h+='<input class="fi" type="date" data-e="'+f.e+'">';
