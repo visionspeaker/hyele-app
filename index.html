@@ -642,6 +642,22 @@
       if(elT)elT.textContent=ct!=null?fmt(ct):'–'; if(elD)elD.textContent=cd!=null?fmt(cd):'–';
     });
   })();
+
+  // 딥링크: ?form=키 (또는 #키) 로 특정 메뉴 바로 열기
+  (function(){
+    try{
+      var q = new URLSearchParams(location.search);
+      var key = q.get('form') || q.get('menu') || (location.hash||'').replace('#','');
+      if(!key) return;
+      var safetyKeys = ['achasago','anjeon','safety','risk'];
+      if(safetyKeys.indexOf(key) >= 0 && window.switchTab){
+        var b = document.querySelector('.tabbar button[data-page="page-safety"]');
+        if(b) window.switchTab(b);
+      }
+      if(typeof FORMS !== 'undefined' && FORMS[key]) openForm(key);
+      else if(typeof contents !== 'undefined' && contents[key]) openDetail(key);
+    }catch(e){}
+  })();
 </script>
 <script>
   if ('serviceWorker' in navigator) {
