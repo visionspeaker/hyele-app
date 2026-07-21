@@ -418,6 +418,7 @@
     function goTo(i,anim){i=Math.max(0,Math.min(pages.length-1,i));idx=i;setActive(i);pages.forEach(function(p,k){p.classList.toggle('active',k===i);});place(anim!==false);}
     window.switchTab=function(btn){goTo(ids.indexOf(btn.dataset.page),true);};
     window.addEventListener('resize',function(){place(false);});
+    window.__relayout=function(){place(false);};
     var sx=0,sy=0,drag=null,base=0,on=false,dxCur=0;
     function busy(){var d=document.getElementById('detail');return d&&d.classList.contains('open');}
     vp.addEventListener('touchstart',function(e){
@@ -461,6 +462,7 @@
     var tx=document.getElementById('viewToggleTx'), use=document.querySelector('.viewtoggle svg use');
     if(tx) tx.textContent = fm ? 'PC 보기' : '모바일 보기';
     if(use) use.setAttribute('href', fm ? '#i-desktop' : '#i-phone');
+    if(window.__relayout){ requestAnimationFrame(function(){ window.__relayout(); }); }
   }
   function toggleView(){
     if(window.innerWidth<820) return;
