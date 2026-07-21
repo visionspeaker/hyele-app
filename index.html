@@ -158,26 +158,34 @@
     .viewtoggle{display:inline-flex;}
     body:not(.force-mobile){
       max-width:none;height:auto;min-height:100vh;display:block;overflow:auto;
-      background:linear-gradient(160deg,#e7f5e4,#f4f7f1) fixed;padding:26px 16px 40px;
+      background:linear-gradient(160deg,#e7f5e4,#f4f7f1) fixed;padding:30px 16px 48px;
     }
     body:not(.force-mobile) > .hero,
     body:not(.force-mobile) > main.viewport,
-    body:not(.force-mobile) > .appfooter{width:520px;max-width:100%;margin-left:auto;margin-right:auto;}
-    body:not(.force-mobile) .hero{border-radius:18px 18px 0 0;position:relative;z-index:1;box-shadow:0 10px 30px rgba(31,45,33,.12);}
-    body:not(.force-mobile) main.viewport{background:#f7faf5;overflow:visible;height:auto;flex:none;box-shadow:0 10px 30px rgba(31,45,33,.12);}
+    body:not(.force-mobile) > .appfooter{width:860px;max-width:100%;margin-left:auto;margin-right:auto;}
+    body:not(.force-mobile) .hero{border-radius:20px 20px 0 0;position:relative;z-index:1;padding:22px 26px 24px;box-shadow:0 12px 34px rgba(31,45,33,.13);}
+    body:not(.force-mobile) .hero h2{font-size:28px;}
+    body:not(.force-mobile) .hero .eyeline{font-size:12px;letter-spacing:1.8px;}
+    body:not(.force-mobile) .hero .wm{width:170px;height:170px;right:-10px;bottom:-30px;}
+    body:not(.force-mobile) main.viewport{background:#f7faf5;overflow:visible;height:auto;flex:none;box-shadow:0 12px 34px rgba(31,45,33,.13);}
     body:not(.force-mobile) .track{display:block;transform:none!important;}
-    body:not(.force-mobile) .page{display:none;height:auto;overflow:visible;padding:16px 18px;}
+    body:not(.force-mobile) .page{display:none;height:auto;overflow:visible;padding:22px 24px;}
     body:not(.force-mobile) .page.active{display:block;}
-    body:not(.force-mobile) .grid{grid-template-columns:repeat(4,minmax(0,1fr));}
-    body:not(.force-mobile) .appfooter{background:#fff;border-radius:0 0 18px 18px;box-shadow:0 10px 30px rgba(31,45,33,.12);overflow:hidden;}
-    /* 탭을 헤더로 (JS가 tabbar를 .hero 안으로 이동) */
-    body:not(.force-mobile) .hero .tabbar{position:absolute;top:15px;right:16px;width:auto;background:transparent;border:none;box-shadow:none;display:flex;gap:6px;}
-    body:not(.force-mobile) .hero .tabbar button{flex:none;flex-direction:row;gap:6px;padding:6px 14px;border-radius:16px;background:rgba(255,255,255,.18);color:#fff;font-size:12px;}
-    body:not(.force-mobile) .hero .tabbar button svg{width:16px;height:16px;}
-    body:not(.force-mobile) .hero .tabbar button.active{background:#fff;color:var(--g-dark);}
+    body:not(.force-mobile) .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;}
+    body:not(.force-mobile) .card{padding:18px 10px 16px;border-radius:18px;}
+    body:not(.force-mobile) .card .icon{width:48px;height:48px;border-radius:14px;margin:0 auto 11px;}
+    body:not(.force-mobile) .card .icon svg.i{width:24px;height:24px;}
+    body:not(.force-mobile) .card .title{font-size:13px;}
+    body:not(.force-mobile) .card .desc{font-size:11px;margin-top:5px;}
+    body:not(.force-mobile) .card.wide{padding:16px 20px;}
+    /* 카운터: 가운데 정렬 + 전환 버튼은 우측 고정 */
+    body:not(.force-mobile) .appfooter{background:#fff;overflow:hidden;}
+    body:not(.force-mobile) .counter{border-radius:0;justify-content:center;padding:11px 0;}
+    /* 탭바: 하단 유지, 앱 창 바닥 라운드 */
+    body:not(.force-mobile) .appfooter > .tabbar{border-radius:0 0 20px 20px;box-shadow:0 12px 34px rgba(31,45,33,.13);}
     /* 상세: 가운데 모달 */
     body:not(.force-mobile) .detail{top:0;left:0;transform:none;width:100%;max-width:none;height:100%;background:rgba(20,32,22,.5);align-items:center;justify-content:center;padding:24px;}
-    body:not(.force-mobile) .detail-inner{flex:0 0 auto;width:660px;max-width:100%;max-height:88vh;background:var(--bg);border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.4);}
+    body:not(.force-mobile) .detail-inner{flex:0 0 auto;width:680px;max-width:100%;max-height:88vh;background:var(--bg);border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.4);}
   }
 
   /* 인앱 폼 */
@@ -453,12 +461,8 @@
     var forced=null; try{forced=localStorage.getItem('viewmode');}catch(e){}
     var fm = wide && forced==='mobile';
     document.body.classList.toggle('force-mobile', fm);
-    var hero=document.querySelector('.hero'), footer=document.querySelector('.appfooter'), tabbar=document.querySelector('.tabbar');
-    var pcMode = wide && !fm;
-    if(tabbar&&hero&&footer){
-      if(pcMode){ if(tabbar.parentNode!==hero) hero.appendChild(tabbar); }
-      else { if(tabbar.parentNode!==footer) footer.appendChild(tabbar); }
-    }
+    var footer=document.querySelector('.appfooter'), tabbar=document.querySelector('.tabbar');
+    if(tabbar&&footer&&tabbar.parentNode!==footer) footer.appendChild(tabbar);
     var tx=document.getElementById('viewToggleTx'), use=document.querySelector('.viewtoggle svg use');
     if(tx) tx.textContent = fm ? 'PC 보기' : '모바일 보기';
     if(use) use.setAttribute('href', fm ? '#i-desktop' : '#i-phone');
