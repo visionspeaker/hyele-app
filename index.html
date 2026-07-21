@@ -659,10 +659,10 @@
       else if(f.t==='time')h+='<input class="fi" type="time" data-e="'+f.e+'">';
       else if(f.t==='dtrange'){
         var topt='';
-        for(var _h=0;_h<24;_h++){for(var _m=0;_m<60;_m+=10){var tv=('0'+_h).slice(-2)+':'+('0'+_m).slice(-2);topt+='<option value="'+tv+'">'+tv+'</option>';}}
+        for(var _h=7;_h<=20;_h++){for(var _m=0;_m<60;_m+=30){ if(_h===20&&_m>0)break; var tv=('0'+_h).slice(-2)+':'+('0'+_m).slice(-2); topt+='<option value="'+tv+'"'+(tv==='12:00'?' selected':'')+'>'+tv+'</option>'; }}
         h+='<div class="dtrange" data-e="'+f.e+'">';
         h+='<input class="fi" type="date" data-part="d">';
-        h+='<div class="dtrow"><span class="dtlbl">시작</span><select class="fi" data-part="s"><option value="">시:분</option>'+topt+'</select><span class="dtsep">~</span><span class="dtlbl">종료</span><select class="fi" data-part="e"><option value="">시:분</option>'+topt+'</select></div>';
+        h+='<div class="dtrow"><span class="dtlbl">시작</span><select class="fi" data-part="s">'+topt+'</select><span class="dtsep">~</span><span class="dtlbl">종료</span><select class="fi" data-part="e">'+topt+'</select></div>';
         h+='</div>';
       }
       else if(f.t==='select'){h+='<select class="fi" data-e="'+f.e+'"><option value="">선택하세요</option>';f.o.forEach(function(o){h+='<option value="'+esc(o)+'">'+esc(o)+'</option>';});h+='</select>';}
