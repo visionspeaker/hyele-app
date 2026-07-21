@@ -198,6 +198,11 @@
   .ff .fi{width:100%;box-sizing:border-box;padding:11px 13px;border:1px solid #e2e9de;border-radius:12px;font-size:14px;font-family:inherit;color:var(--text);background:#fff;outline:none;}
   .ff select.fi{appearance:none;-webkit-appearance:none;}
   .ff input[type="date"].fi,.ff input[type="datetime-local"].fi{-webkit-appearance:none;appearance:none;min-width:0;max-width:100%;width:100%;height:44px;}
+  .ff input[type="time"].fi{-webkit-appearance:none;appearance:none;min-width:0;max-width:100%;width:100%;height:44px;}
+  .ff .dtrange{display:flex;flex-direction:column;gap:8px;}
+  .ff .dtrange .dtrow{display:flex;align-items:center;gap:8px;}
+  .ff .dtrange .dtsep{color:var(--label);font-weight:800;flex:0 0 auto;}
+  .ff .dtrange .dthint{font-size:11px;color:var(--label);}
   .ff .fi:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(26,166,58,.13);}
   .ff textarea.fi{min-height:62px;resize:vertical;line-height:1.5;}
   .ff .chips{display:flex;flex-wrap:wrap;gap:8px;}
@@ -612,11 +617,11 @@
        {e:'entry.2066722286',t:'time',l:'업무 종료시간',r:1}
      ]},
    welcome:{title:'웰컴모니터 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSc6i-AUf9zK53Nu4KY7N00hVuOUl5sCUNW1EhVhb1RmK3vcKA/formResponse',review:1,
-     note:'로비 웰컴모니터에 표시할 환영 문구를 신청합니다.',
+     note:'현관 웰컴모니터에 표시할 환영 문구를 신청합니다.',
      fields:[
        {e:'entry.1752801698',t:'select',l:'신청부서',r:1,o:['수배전영업부','설계부','생산관리부','자재관리부','품질보증부','신재생영업부','부설연구소','신사업부','기타']},
-       {e:'entry.1921397399',t:'para',l:'웰컴모니터 신청 문구',r:1,ph:'예) P4L-PJT Ph2 분전반 공장검수 방문을 환영합니다!'},
-       {e:'entry.704405482',t:'text',l:'송출 시간',r:1,ph:'예) 10:00~14:00'},
+       {e:'entry.1921397399',t:'para',l:'웰컴모니터 문구',r:1,ph:'예) P4L-PJT Ph2 분전반 공장검수 방문을 환영합니다!'},
+       {e:'entry.704405482',t:'dtrange',l:'송출 일시',r:1},
        {e:'entry.1728165854',t:'para',l:'기타 요청',r:0}
      ]},
    achasago:{title:'아차사고 접수',mode:'gas',action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
@@ -651,6 +656,13 @@
       else if(f.t==='date')h+='<input class="fi" type="date" data-e="'+f.e+'">';
       else if(f.t==='datetime')h+='<input class="fi" type="datetime-local" data-e="'+f.e+'">';
       else if(f.t==='time')h+='<input class="fi" type="time" data-e="'+f.e+'">';
+      else if(f.t==='dtrange'){
+        h+='<div class="dtrange" data-e="'+f.e+'">';
+        h+='<input class="fi" type="date" data-part="d">';
+        h+='<div class="dtrow"><input class="fi" type="time" data-part="s"><span class="dtsep">~</span><input class="fi" type="time" data-part="e"></div>';
+        h+='<div class="dthint">일자 · 시작 시간 ~ 종료 시간</div>';
+        h+='</div>';
+      }
       else if(f.t==='select'){h+='<select class="fi" data-e="'+f.e+'"><option value="">선택하세요</option>';f.o.forEach(function(o){h+='<option value="'+esc(o)+'">'+esc(o)+'</option>';});h+='</select>';}
       else if(f.t==='radio'||f.t==='check'){
         h+='<div class="chips" data-group="'+f.e+'" data-multi="'+(f.t==='check'?1:0)+'">';
@@ -733,6 +745,12 @@
         if(!v){ if(f.r)return ffErr(f.l); continue; }
         var tp=v.split(':'); data.push([f.e+'_hour',String(+tp[0]||0)]); data.push([f.e+'_minute',String(+tp[1]||0)]);
         review.push([f.l,v]);
+      } else if(f.t==='dtrange'){
+        var w=body.querySelector('.dtrange[data-e="'+f.e+'"]');
+        var dd=w.querySelector('[data-part="d"]').value, ss=w.querySelector('[data-part="s"]').value, ee=w.querySelector('[data-part="e"]').value;
+        if(!dd||!ss||!ee){ if(f.r||dd||ss||ee) return ffErr(f.l); continue; }
+        var cb=dd+' '+ss+' ~ '+ee;
+        data.push([f.e,cb]); review.push([f.l,cb]);
       } else {
         var el=body.querySelector('[data-e="'+f.e+'"]');
         var val=(el.value||'').trim();
