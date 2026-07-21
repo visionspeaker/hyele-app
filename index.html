@@ -132,7 +132,7 @@
   .detail-header button{background:rgba(255,255,255,0.2);border:none;color:#fff;
     width:34px;height:34px;border-radius:10px;font-size:18px;cursor:pointer;}
   .detail-header h2{font-size:16px;}
-  .detail-body{padding:22px 20px;overflow-y:auto;overflow-x:hidden;line-height:1.7;font-size:14px;}
+  .detail-body{padding:22px 20px;overflow-y:auto;overflow-x:hidden;line-height:1.7;font-size:14px;flex:1 1 auto;min-height:0;}
   .detail-body h4{font-size:15px;color:var(--g-dark);margin:18px 0 8px;font-weight:800;}
   .detail-body h4:first-child{margin-top:0;}
   .placeholder{background:#fff;border:1px dashed #d7e4d3;border-radius:14px;
@@ -145,6 +145,41 @@
     font-size:11px;font-weight:700;}
   .tabbar button svg{width:23px;height:23px;stroke-width:1.9;}
   .tabbar button.active{color:var(--g);}
+
+  .counter{position:relative;}
+  .viewtoggle{display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);align-items:center;gap:5px;
+    border:1px solid #d7e4d3;background:#f6faf3;color:#2f6d3a;border-radius:16px;padding:5px 11px;font-size:11px;font-weight:800;
+    font-family:inherit;cursor:pointer;}
+  .viewtoggle svg{width:14px;height:14px;stroke-width:1.9;}
+  .detail-inner{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;width:100%;}
+
+  /* ===== PC 보기 (가로 820px 이상) ===== */
+  @media (min-width:820px){
+    .viewtoggle{display:inline-flex;}
+    body:not(.force-mobile){
+      max-width:none;height:auto;min-height:100vh;display:block;overflow:auto;
+      background:linear-gradient(160deg,#e7f5e4,#f4f7f1) fixed;padding:26px 16px 40px;
+    }
+    body:not(.force-mobile) > .hero,
+    body:not(.force-mobile) > main.viewport,
+    body:not(.force-mobile) > .appfooter{width:520px;max-width:100%;margin-left:auto;margin-right:auto;}
+    body:not(.force-mobile) .hero{border-radius:18px 18px 0 0;position:relative;z-index:1;box-shadow:0 10px 30px rgba(31,45,33,.12);}
+    body:not(.force-mobile) main.viewport{background:#f7faf5;overflow:visible;height:auto;flex:none;box-shadow:0 10px 30px rgba(31,45,33,.12);}
+    body:not(.force-mobile) .track{display:block;transform:none!important;}
+    body:not(.force-mobile) .page{display:none;height:auto;overflow:visible;padding:16px 18px;}
+    body:not(.force-mobile) .page.active{display:block;}
+    body:not(.force-mobile) .grid{grid-template-columns:repeat(4,minmax(0,1fr));}
+    body:not(.force-mobile) .appfooter{background:#fff;border-radius:0 0 18px 18px;box-shadow:0 10px 30px rgba(31,45,33,.12);overflow:hidden;}
+    /* 탭을 헤더로 (JS가 tabbar를 .hero 안으로 이동) */
+    body:not(.force-mobile) .hero .tabbar{position:absolute;top:15px;right:16px;width:auto;background:transparent;border:none;box-shadow:none;display:flex;gap:6px;}
+    body:not(.force-mobile) .hero .tabbar button{flex:none;flex-direction:row;gap:6px;padding:6px 14px;border-radius:16px;background:rgba(255,255,255,.18);color:#fff;font-size:12px;}
+    body:not(.force-mobile) .hero .tabbar button svg{width:16px;height:16px;}
+    body:not(.force-mobile) .hero .tabbar button.active{background:#fff;color:var(--g-dark);}
+    /* 상세: 가운데 모달 */
+    body:not(.force-mobile) .detail{top:0;left:0;transform:none;width:100%;max-width:none;height:100%;background:rgba(20,32,22,.5);align-items:center;justify-content:center;padding:24px;}
+    body:not(.force-mobile) .detail-inner{flex:0 0 auto;width:660px;max-width:100%;max-height:88vh;background:var(--bg);border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.4);}
+  }
+
   /* 인앱 폼 */
   .ff{padding:2px 2px 10px;}
   .ff .note{background:#fff5e9;border:1px solid #f6e2c4;color:#8a5a12;font-size:11.5px;line-height:1.55;padding:11px 13px;border-radius:12px;margin:8px 0 2px;}
@@ -242,6 +277,8 @@
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7.5l8 5.5 8-5.5"/></symbol>
   <symbol id="i-approve" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="M8.5 13.2l2.2 2.2 4.3-4.4"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M10.5 18h3"/></symbol>
+  <symbol id="i-desktop" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M9 20h6M12 16v4"/></symbol>
   <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4.5" rx="1.2"/><path d="M5 8.5V20h14V8.5"/><path d="M10 12.5h4"/></symbol>
   <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></symbol>
 </defs></svg>
@@ -344,6 +381,7 @@
   <div class="c"><span>TODAY</span><b id="cnt-today">0</b></div>
   <div class="sep"></div>
   <div class="c"><span>TOTAL</span><b id="cnt-total">0</b></div>
+  <button class="viewtoggle" id="viewToggle" type="button" onclick="toggleView()"><svg class="i"><use href="#i-phone"/></svg><span id="viewToggleTx">모바일 보기</span></button>
 </div>
 <!-- 탭바 (홈 / 안전보건) -->
 <nav class="tabbar">
@@ -356,8 +394,10 @@
 
 <!-- 상세 -->
 <div class="detail" id="detail">
-  <div class="detail-header"><button onclick="closeDetail()">←</button><h2 id="detail-title">제목</h2></div>
-  <div class="detail-body" id="detail-body"></div>
+  <div class="detail-inner">
+    <div class="detail-header"><button onclick="closeDetail()">←</button><h2 id="detail-title">제목</h2></div>
+    <div class="detail-body" id="detail-body"></div>
+  </div>
 </div>
 
 
@@ -407,6 +447,28 @@
     },{passive:true});
     goTo(0,false);
   })();
+  function applyView(){
+    var wide = window.innerWidth>=820;
+    var forced=null; try{forced=localStorage.getItem('viewmode');}catch(e){}
+    var fm = wide && forced==='mobile';
+    document.body.classList.toggle('force-mobile', fm);
+    var hero=document.querySelector('.hero'), footer=document.querySelector('.appfooter'), tabbar=document.querySelector('.tabbar');
+    var pcMode = wide && !fm;
+    if(tabbar&&hero&&footer){
+      if(pcMode){ if(tabbar.parentNode!==hero) hero.appendChild(tabbar); }
+      else { if(tabbar.parentNode!==footer) footer.appendChild(tabbar); }
+    }
+    var tx=document.getElementById('viewToggleTx'), use=document.querySelector('.viewtoggle svg use');
+    if(tx) tx.textContent = fm ? 'PC 보기' : '모바일 보기';
+    if(use) use.setAttribute('href', fm ? '#i-desktop' : '#i-phone');
+  }
+  function toggleView(){
+    if(window.innerWidth<820) return;
+    var fm=document.body.classList.contains('force-mobile');
+    try{ localStorage.setItem('viewmode', fm ? 'pc' : 'mobile'); }catch(e){}
+    applyView(); window.scrollTo(0,0);
+  }
+  window.addEventListener('resize', applyView);
   const contents = {
     archive:{ title:'아카이브', html:
       '<div class="arch"><div class="arch-note">안내·동의 기간이 종료된 메뉴를 모아둔 곳입니다. 내용은 계속 열람할 수 있습니다.</div><div class="arch-item" role="button" tabindex="0" onclick="openDetail(&quot;chwieop&quot;)"><span class="arch-ic"><svg class="i"><use href="#i-mega"/></svg></span><span class="arch-tx"><b>취업규칙 9차 개정 안내</b><span>동의 기간 종료 · 2026. 8. 1. 시행</span></span><span class="arch-ar">›</span></div></div>'
@@ -647,6 +709,8 @@
       img.src=url;
     }catch(e){fail&&fail();}
   }
+
+  applyView();
 
   // 실제 방문 카운터 (Abacus · TOTAL과 TODAY를 같은 세션에서 함께 집계)
   (function(){
