@@ -290,6 +290,9 @@
   <symbol id="i-desktop" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M9 20h6M12 16v4"/></symbol>
   <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4.5" rx="1.2"/><path d="M5 8.5V20h14V8.5"/><path d="M10 12.5h4"/></symbol>
   <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 3 10.5l7 2.5 2.5 7z"/><path d="M21 3 10 13"/></symbol>
+  <symbol id="i-health" viewBox="0 0 24 24"><path d="M12 20s-6.5-4.2-9-8.2C1.3 9 2.6 5.8 6 5.8c2 0 3.2 1.3 4 2.4.8-1.1 2-2.4 4-2.4 3.4 0 4.7 3.2 3 6-2.5 4-9 8.2-9 8.2z"/><path d="M6.5 11.4h2.4l1.1-1.7 1.7 3.3 1.1-1.6H17.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3.6 2.1"/></symbol>
 </defs></svg>
 
 <!-- 히어로 -->
@@ -334,6 +337,18 @@
       <div class="card" role="button" tabindex="0" onclick="openForm('geunmubok')">
         <div class="icon t-purple"><svg class="i"><use href="#i-shirt"/></svg></div>
         <div class="title">근무복 신청</div><div class="desc">작업복·근무복 신청</div>
+      </div>
+      <div class="card" role="button" tabindex="0" onclick="openForm('upyeon')">
+        <div class="icon t-teal"><svg class="i"><use href="#i-send"/></svg></div>
+        <div class="title">우편업무 신청</div><div class="desc">우체국 업무 신청</div>
+      </div>
+      <div class="card" role="button" tabindex="0" onclick="openForm('bogeon')">
+        <div class="icon t-red"><svg class="i"><use href="#i-health"/></svg></div>
+        <div class="title">보건상담 신청</div><div class="desc">보건상담 신청</div>
+      </div>
+      <div class="card" role="button" tabindex="0" onclick="openForm('chogwa')">
+        <div class="icon t-amber"><svg class="i"><use href="#i-clock"/></svg></div>
+        <div class="title">초과근무 신청</div><div class="desc">초과근무 신청</div>
       </div>
       <a class="card" href="https://notebooklm.google.com/notebook/ad9e0fc4-590e-419b-81bf-74e06e01a60e?authuser=0" target="_blank" rel="noopener">
         <div class="icon t-pink"><svg class="i"><use href="#i-ai"/></svg></div>
@@ -567,6 +582,25 @@
        {e:'entry.1042218872',t:'radio',l:'신청 사유',r:1,o:['신입직원 (입사 후 첫 신청)','옷이 낡음(훼손)'],other:1},
        {e:'entry.899820959',t:'para',l:'기타 업무지원 요청 및 의견',r:0}
      ]},
+   upyeon:{title:'우편업무 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSfqW6pgOl0Kgi6n_hAkutaXP6w0R1JsH5zWxxXwF8HusAjerg/formResponse',
+     fields:[
+       {e:'entry.1707587513',t:'text',l:'신청자',r:1,ph:'성명'},
+       {e:'entry.1159644275',t:'radio',l:'우편 종류',r:1,o:['빠른등기','일반등기','택배','일반우편']},
+       {e:'entry.1904560369',t:'radio',l:'발송일',s:'긴급 발송이 아니면 2~3일 모아서 발송예정',r:1,o:['오늘(긴급)','내일 발송 가능'],other:1},
+       {e:'entry.1642317690',t:'para',l:'받는사람 및 발송 목적',s:'지출결의용 정보',r:1,ph:'예) OO은행 등기, 계약서 원본 발송'}
+     ]},
+   bogeon:{title:'보건상담 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSfbxzJlgH3N5w-gSBoeq2FmkeEC9d9DMRsqbmkrm73yahIzTw/formResponse',
+     fields:[
+       {e:'entry.2023422160',t:'select',l:'소속',r:1,o:['수배전 영업부','수배전 설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','경영지원부','한양이앤에스','기타']},
+       {e:'entry.116916740',t:'text',l:'참석 희망자 성명',r:1}
+     ]},
+   chogwa:{title:'초과근무 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSfN3cVgf_ZG2T54o0RK51YaRBC0U9H8z6pXmg7V0zGbSoPMSQ/formResponse',
+     fields:[
+       {e:'entry.342827633',t:'text',l:'성명',r:1},
+       {e:'entry.868691722',t:'para',l:'업무내용',r:1,ph:'초과근무 사유·내용'},
+       {e:'entry.96053746',t:'datetime',l:'근무일 및 업무 시작시간',r:1},
+       {e:'entry.2066722286',t:'time',l:'업무 종료시간',r:1}
+     ]},
    achasago:{title:'아차사고 접수',mode:'gas',action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      note:'아차사고: 다칠 뻔했지만 다치지 않은 상황을 공유해 재해를 예방합니다. 현장 사진을 함께 첨부할 수 있습니다.',
      fields:[
@@ -598,6 +632,7 @@
       else if(f.t==='para')h+='<textarea class="fi" data-e="'+f.e+'" placeholder="'+esc(f.ph||'')+'"></textarea>';
       else if(f.t==='date')h+='<input class="fi" type="date" data-e="'+f.e+'">';
       else if(f.t==='datetime')h+='<input class="fi" type="datetime-local" data-e="'+f.e+'">';
+      else if(f.t==='time')h+='<input class="fi" type="time" data-e="'+f.e+'">';
       else if(f.t==='select'){h+='<select class="fi" data-e="'+f.e+'"><option value="">선택하세요</option>';f.o.forEach(function(o){h+='<option value="'+esc(o)+'">'+esc(o)+'</option>';});h+='</select>';}
       else if(f.t==='radio'||f.t==='check'){
         h+='<div class="chips" data-group="'+f.e+'" data-multi="'+(f.t==='check'?1:0)+'">';
@@ -665,6 +700,16 @@
         var v=body.querySelector('[data-e="'+f.e+'"]').value;
         if(!v){ if(f.r)return ffErr(f.l); continue; }
         var p=v.split('-'); data.push([f.e+'_year',p[0]]); data.push([f.e+'_month',String(+p[1])]); data.push([f.e+'_day',String(+p[2])]);
+      } else if(f.t==='datetime'){
+        var v=body.querySelector('[data-e="'+f.e+'"]').value;
+        if(!v){ if(f.r)return ffErr(f.l); continue; }
+        var dp=v.split('T'), d=dp[0].split('-'), tm=(dp[1]||'').split(':');
+        data.push([f.e+'_year',d[0]]); data.push([f.e+'_month',String(+d[1])]); data.push([f.e+'_day',String(+d[2])]);
+        data.push([f.e+'_hour',String(+tm[0]||0)]); data.push([f.e+'_minute',String(+tm[1]||0)]);
+      } else if(f.t==='time'){
+        var v=body.querySelector('[data-e="'+f.e+'"]').value;
+        if(!v){ if(f.r)return ffErr(f.l); continue; }
+        var tp=v.split(':'); data.push([f.e+'_hour',String(+tp[0]||0)]); data.push([f.e+'_minute',String(+tp[1]||0)]);
       } else {
         var el=body.querySelector('[data-e="'+f.e+'"]');
         var val=(el.value||'').trim();
