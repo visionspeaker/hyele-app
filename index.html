@@ -199,10 +199,11 @@
   .ff select.fi{appearance:none;-webkit-appearance:none;}
   .ff input[type="date"].fi,.ff input[type="datetime-local"].fi{-webkit-appearance:none;appearance:none;min-width:0;max-width:100%;width:100%;height:44px;}
   .ff input[type="time"].fi{-webkit-appearance:none;appearance:none;min-width:0;max-width:100%;width:100%;height:44px;}
-  .ff .dtrange{display:flex;flex-direction:column;gap:8px;}
+  .ff .dtrange{display:flex;flex-direction:column;gap:6px;}
+  .ff .dtrange .dtsub{font-size:11px;color:var(--label);margin-top:4px;}
   .ff .dtrange .dtrow{display:flex;align-items:center;gap:8px;}
+  .ff .dtrange .dtrow .fi{flex:1;min-width:0;}
   .ff .dtrange .dtsep{color:var(--label);font-weight:800;flex:0 0 auto;}
-  .ff .dtrange .dthint{font-size:11px;color:var(--label);}
   .ff .fi:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(26,166,58,.13);}
   .ff textarea.fi{min-height:62px;resize:vertical;line-height:1.5;}
   .ff .chips{display:flex;flex-wrap:wrap;gap:8px;}
@@ -657,10 +658,13 @@
       else if(f.t==='datetime')h+='<input class="fi" type="datetime-local" data-e="'+f.e+'">';
       else if(f.t==='time')h+='<input class="fi" type="time" data-e="'+f.e+'">';
       else if(f.t==='dtrange'){
+        var hh='',mm='';
+        for(var _h=0;_h<24;_h++){var z=('0'+_h).slice(-2);hh+='<option value="'+z+'">'+z+'</option>';}
+        for(var _m=0;_m<60;_m+=10){var zm=('0'+_m).slice(-2);mm+='<option value="'+zm+'">'+zm+'</option>';}
         h+='<div class="dtrange" data-e="'+f.e+'">';
         h+='<input class="fi" type="date" data-part="d">';
-        h+='<div class="dtrow"><input class="fi" type="time" data-part="s"><span class="dtsep">~</span><input class="fi" type="time" data-part="e"></div>';
-        h+='<div class="dthint">일자 · 시작 시간 ~ 종료 시간</div>';
+        h+='<div class="dtsub">시작</div><div class="dtrow"><select class="fi" data-part="sh"><option value="">시</option>'+hh+'</select><span class="dtsep">:</span><select class="fi" data-part="sm"><option value="">분</option>'+mm+'</select></div>';
+        h+='<div class="dtsub">종료</div><div class="dtrow"><select class="fi" data-part="eh"><option value="">시</option>'+hh+'</select><span class="dtsep">:</span><select class="fi" data-part="em"><option value="">분</option>'+mm+'</select></div>';
         h+='</div>';
       }
       else if(f.t==='select'){h+='<select class="fi" data-e="'+f.e+'"><option value="">선택하세요</option>';f.o.forEach(function(o){h+='<option value="'+esc(o)+'">'+esc(o)+'</option>';});h+='</select>';}
@@ -747,9 +751,12 @@
         review.push([f.l,v]);
       } else if(f.t==='dtrange'){
         var w=body.querySelector('.dtrange[data-e="'+f.e+'"]');
-        var dd=w.querySelector('[data-part="d"]').value, ss=w.querySelector('[data-part="s"]').value, ee=w.querySelector('[data-part="e"]').value;
-        if(!dd||!ss||!ee){ if(f.r||dd||ss||ee) return ffErr(f.l); continue; }
-        var cb=dd+' '+ss+' ~ '+ee;
+        var dd=w.querySelector('[data-part="d"]').value;
+        var sh=w.querySelector('[data-part="sh"]').value, sm=w.querySelector('[data-part="sm"]').value;
+        var eh=w.querySelector('[data-part="eh"]').value, em=w.querySelector('[data-part="em"]').value;
+        var any=dd||sh||sm||eh||em, all=dd&&sh&&sm&&eh&&em;
+        if(!all){ if(f.r||any) return ffErr(f.l); continue; }
+        var cb=dd+' '+sh+':'+sm+' ~ '+eh+':'+em;
         data.push([f.e,cb]); review.push([f.l,cb]);
       } else {
         var el=body.querySelector('[data-e="'+f.e+'"]');
