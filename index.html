@@ -149,7 +149,7 @@
     border:1px solid #d7e4d3;background:#f6faf3;color:#2f6d3a;border-radius:16px;padding:5px 11px;font-size:11px;font-weight:800;
     font-family:inherit;cursor:pointer;}
   .viewtoggle svg{width:14px;height:14px;stroke-width:1.9;}
-  .refreshbtn{display:inline-flex;position:absolute;left:12px;top:50%;transform:translateY(-50%);align-items:center;gap:5px;
+  .refreshbtn{display:inline-flex;position:absolute;right:12px;top:50%;transform:translateY(-50%);align-items:center;gap:5px;
     border:1px solid #cfe6d3;background:#eef7ee;color:var(--g-dark);border-radius:16px;padding:5px 11px;font-size:11px;font-weight:800;
     font-family:inherit;cursor:pointer;}
   .refreshbtn svg{width:14px;height:14px;stroke-width:2;}
@@ -160,6 +160,7 @@
   /* ===== PC 보기 (가로 820px 이상) ===== */
   @media (min-width:820px){
     .viewtoggle{display:inline-flex;}
+    .refreshbtn{right:126px;left:auto;}
     body:not(.force-mobile){
       max-width:none;height:auto;min-height:100vh;display:block;overflow:auto;
       background:linear-gradient(160deg,#e7f5e4,#f4f7f1) fixed;padding:30px 16px 48px;
