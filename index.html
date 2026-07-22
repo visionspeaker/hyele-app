@@ -149,11 +149,18 @@
     border:1px solid #d7e4d3;background:#f6faf3;color:#2f6d3a;border-radius:16px;padding:5px 11px;font-size:11px;font-weight:800;
     font-family:inherit;cursor:pointer;}
   .viewtoggle svg{width:14px;height:14px;stroke-width:1.9;}
+  .refreshbtn{display:inline-flex;position:absolute;right:12px;top:50%;transform:translateY(-50%);align-items:center;gap:5px;
+    border:1px solid #cfe6d3;background:#eef7ee;color:var(--g-dark);border-radius:16px;padding:5px 11px;font-size:11px;font-weight:800;
+    font-family:inherit;cursor:pointer;}
+  .refreshbtn svg{width:14px;height:14px;stroke-width:2;}
+  .refreshbtn.spin svg{animation:rbspin .7s linear infinite;}
+  @keyframes rbspin{to{transform:rotate(360deg);}}
   .detail-inner{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;width:100%;}
 
   /* ===== PC 보기 (가로 820px 이상) ===== */
   @media (min-width:820px){
     .viewtoggle{display:inline-flex;}
+    body:not(.force-mobile) .refreshbtn{right:126px;}
     body:not(.force-mobile){
       max-width:none;height:auto;min-height:100vh;display:block;overflow:auto;
       background:linear-gradient(160deg,#e7f5e4,#f4f7f1) fixed;padding:30px 16px 48px;
@@ -305,6 +312,7 @@
   <symbol id="i-health" viewBox="0 0 24 24"><path d="M12 20s-6.5-4.2-9-8.2C1.3 9 2.6 5.8 6 5.8c2 0 3.2 1.3 4 2.4.8-1.1 2-2.4 4-2.4 3.4 0 4.7 3.2 3 6-2.5 4-9 8.2-9 8.2z"/><path d="M6.5 11.4h2.4l1.1-1.7 1.7 3.3 1.1-1.6H17.5"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3.6 2.1"/></symbol>
   <symbol id="i-tv" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8.5 21h7"/><path d="M12 17v4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.05-4.95"/><path d="M19.5 4v4h-4"/></symbol>
 </defs></svg>
 
 <!-- 히어로 -->
@@ -421,6 +429,7 @@
   <div class="c"><span>TODAY</span><b id="cnt-today">0</b></div>
   <div class="sep"></div>
   <div class="c"><span>TOTAL</span><b id="cnt-total">0</b></div>
+  <button class="refreshbtn" id="refreshBtn" type="button" onclick="forceRefresh()"><svg class="i"><use href="#i-refresh"/></svg><span>새로고침</span></button>
   <button class="viewtoggle" id="viewToggle" type="button" onclick="toggleView()"><svg class="i"><use href="#i-phone"/></svg><span id="viewToggleTx">모바일 보기</span></button>
 </div>
 <!-- 탭바 (홈 / 안전보건) -->
@@ -507,6 +516,25 @@
     applyView(); window.scrollTo(0,0);
   }
   window.addEventListener('resize', applyView);
+  function forceRefresh(){
+    var btn=document.getElementById('refreshBtn'); if(btn){btn.classList.add('spin');}
+    Promise.resolve().then(function(){
+      if('serviceWorker' in navigator){
+        return navigator.serviceWorker.getRegistrations().then(function(rs){
+          return Promise.all(rs.map(function(r){return r.unregister();}));
+        });
+      }
+    }).then(function(){
+      if(window.caches&&caches.keys){
+        return caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));});
+      }
+    }).catch(function(){}).then(function(){
+      var u=location.href.split('#')[0].replace(/[?&]_r=\d+/,'');
+      u+=(u.indexOf('?')>-1?'&':'?')+'_r='+Date.now();
+      location.replace(u);
+    });
+  }
+  window.forceRefresh=forceRefresh;
   const contents = {
     archive:{ title:'아카이브', html:
       '<div class="arch"><div class="arch-note">안내·동의 기간이 종료된 메뉴를 모아둔 곳입니다. 내용은 계속 열람할 수 있습니다.</div><div class="arch-item" role="button" tabindex="0" onclick="openDetail(&quot;chwieop&quot;)"><span class="arch-ic"><svg class="i"><use href="#i-mega"/></svg></span><span class="arch-tx"><b>취업규칙 9차 개정 안내</b><span>동의 기간 종료 · 2026. 8. 1. 시행</span></span><span class="arch-ar">›</span></div></div>'
