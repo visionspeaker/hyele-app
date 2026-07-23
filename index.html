@@ -145,10 +145,11 @@
   .tabbar button.active{color:var(--g);}
 
   .counter{position:relative;}
-  .viewtoggle{display:inline-flex;position:absolute;left:12px;top:50%;transform:translateY(-50%);align-items:center;gap:5px;
+  .viewtoggle{display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);align-items:center;gap:5px;
     border:1px solid #d7e4d3;background:#f6faf3;color:#2f6d3a;border-radius:16px;padding:5px 11px;font-size:11px;font-weight:800;
     font-family:inherit;cursor:pointer;}
   .viewtoggle svg{width:14px;height:14px;stroke-width:1.9;}
+  @media (min-width:820px){ .viewtoggle{display:inline-flex;} }
   .refreshbtn{display:inline-flex;position:absolute;right:12px;top:50%;transform:translateY(-50%);align-items:center;gap:5px;
     border:1px solid #cfe6d3;background:#eef7ee;color:var(--g-dark);border-radius:16px;padding:5px 11px;font-size:11px;font-weight:800;
     font-family:inherit;cursor:pointer;}
