@@ -117,6 +117,7 @@
   .t-teal{background:#1f9e86;color:#fff}
   .t-pink{background:#d65a86;color:#fff}
   .t-arch{background:#8a949c;color:#fff}
+  .t-orange{background:#f0872e;color:#fff}
   /* 공지 카드 */
   .notice{background:#fff;border-radius:20px;padding:16px 18px;border:1px solid #f0f3ee;
     box-shadow:0 5px 16px rgba(31,45,33,0.055);}
@@ -265,6 +266,8 @@
   .doc-div{border-top:1px dashed #d7e4d3;margin:30px 0 6px;}
   .doc>.doc-img:first-child{margin-top:2px;}
   .doc-img{width:100%;display:block;border:1px solid var(--line);border-radius:10px;margin-top:14px;box-shadow:0 3px 10px rgba(31,45,33,.06);}
+  .doc-sign{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--g);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px;border-radius:14px;box-shadow:0 6px 16px rgba(26,166,58,.3);margin-bottom:4px;}
+  .doc-sign svg.i{width:19px;height:19px;stroke:#fff;}
   .cmp-intro{font-size:12.5px;line-height:1.6;color:#3f4d41;background:#f6faf3;border:1px solid #dfeed6;border-radius:12px;padding:12px 14px;margin-bottom:14px;}
   .cmp-item{background:#fff;border:1px solid #eef2ec;border-radius:14px;padding:14px 15px;margin-bottom:12px;box-shadow:0 3px 10px rgba(31,45,33,.05);}
   .cmp-h{font-size:14px;font-weight:800;color:#0b6f28;line-height:1.35;}
@@ -324,6 +327,8 @@
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3.6 2.1"/></symbol>
   <symbol id="i-tv" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8.5 21h7"/><path d="M12 17v4"/></symbol>
   <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.05-4.95"/><path d="M19.5 4v4h-4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.3"/><path d="M12 2.5v2.3M12 19.2v2.3M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.3M19.2 12h2.3M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></symbol>
+  <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 14.8V5.5a2 2 0 0 0-4 0v9.3a4 4 0 1 0 4 0z"/><path d="M12 15V9"/></symbol>
 </defs></svg>
 
 <!-- 히어로 -->
@@ -377,10 +382,6 @@
         <div class="icon t-blue"><svg class="i"><use href="#i-tv"/></svg></div>
         <div class="title">웰컴모니터 신청</div>
       </div>
-      <div class="card" role="button" tabindex="0" onclick="openForm('bogeon')">
-        <div class="icon t-red"><svg class="i"><use href="#i-health"/></svg></div>
-        <div class="title">보건상담 신청</div>
-      </div>
       <div class="card" role="button" tabindex="0" onclick="openForm('chogwa')">
         <div class="icon t-amber"><svg class="i"><use href="#i-clock"/></svg></div>
         <div class="title">초과근무 신청</div>
@@ -408,16 +409,28 @@
     <div class="cat">
     <div class="label">안전보건</div>
     <div class="grid grid-safety">
-      <div class="card wide" role="button" tabindex="0" onclick="openDetail('safety')">
+      <div class="card" role="button" tabindex="0" onclick="openDetail('safety')">
         <div class="icon t-teal"><svg class="i"><use href="#i-book"/></svg></div>
         <div class="title">안전보건 경영방침·목표</div>
       </div>
-      <div class="card wide" role="button" tabindex="0" onclick="openDetail('risk')">
+      <div class="card" role="button" tabindex="0" onclick="openDetail('risk')">
         <div class="icon t-amber"><svg class="i"><use href="#i-book"/></svg></div>
         <div class="title">위험성평가 결과 공유</div>
       </div>
+      <div class="card" role="button" tabindex="0" onclick="openForm('bogeon')">
+        <div class="icon t-pink"><svg class="i"><use href="#i-health"/></svg></div>
+        <div class="title">보건상담 신청</div>
+      </div>
+      <a class="card" href="https://www.weatheri.co.kr/forecast/forecast01.php?rid=0203010203&k=1&a_name=%ED%8F%89%ED%83%9D" target="_blank" rel="noopener">
+        <div class="icon t-red"><svg class="i"><use href="#i-thermo"/></svg></div>
+        <div class="title">폭염특보</div>
+      </a>
+      <div class="card" role="button" tabindex="0" onclick="openDetail('heat')">
+        <div class="icon t-red"><svg class="i"><use href="#i-sun"/></svg></div>
+        <div class="title">온열질환 예방수칙</div>
+      </div>
       <div class="card" role="button" tabindex="0" onclick="openForm('achasago')">
-        <div class="icon t-red"><svg class="i"><use href="#i-alert"/></svg></div>
+        <div class="icon t-orange"><svg class="i"><use href="#i-alert"/></svg></div>
         <div class="title">아차사고 접수</div>
       </div>
       <div class="card" role="button" tabindex="0" onclick="openForm('anjeon')">
@@ -425,7 +438,7 @@
         <div class="title">안전용품 신청</div>
       </div>
       <a class="card" href="https://hyele.worpl.net/board?board_id=anonymous#page/1" target="_blank" rel="noopener">
-        <div class="icon t-pink"><svg class="i"><use href="#i-msg"/></svg></div>
+        <div class="icon t-purple"><svg class="i"><use href="#i-msg"/></svg></div>
         <div class="title">온라인 의견함</div>
       </a>
     </div>
@@ -565,6 +578,14 @@
       '<img class="doc-img" alt="개선실행 사진대지 3" src="./risk-4.jpg">'+
       '<img class="doc-img" alt="개선실행 사진대지 4" src="./risk-5.jpg">'+
       '<img class="doc-img" alt="개선실행 사진대지 5" src="./risk-6.jpg">'+
+      '</div>'
+    },
+    heat:{ title:'온열질환 예방수칙', html:
+      '<div class="doc">'+
+      '<a class="doc-sign" href="https://visionspeaker.github.io/edu-sign/?gs=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbzTLmcyfQcL56Yo4K04FMMPHsU-WieAzugyVeV9V2ybeQug00_LIf92vG2o6McYbJM%2Fexec&amp;t=adhoc" target="_blank" rel="noopener"><svg class="i"><use href="#i-pen"/></svg>수시교육 서명하기</a>'+
+      '<div class="doc-h" style="font-size:14px;letter-spacing:1px;">폭염으로 인한 온열질환 예방수칙</div>'+
+      '<img class="doc-img" alt="온열질환 예방수칙 1면" src="./heat-1.jpg">'+
+      '<img class="doc-img" alt="온열질환 예방수칙 2면" src="./heat-2.jpg">'+
       '</div>'
     },
     chwieop:{ title:'취업규칙 9차 개정 안내', html:
