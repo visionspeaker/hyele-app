@@ -268,6 +268,12 @@
   .doc-img{width:100%;display:block;border:1px solid var(--line);border-radius:10px;margin-top:14px;box-shadow:0 3px 10px rgba(31,45,33,.06);}
   .doc-sign{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--g);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px;border-radius:14px;box-shadow:0 6px 16px rgba(26,166,58,.3);margin-bottom:4px;}
   .doc-sign svg.i{width:19px;height:19px;stroke:#fff;}
+  .doc-sign.red{background:#e0645f;box-shadow:0 6px 16px rgba(224,100,95,.3);}
+  .heat-emg{border:2px solid #e0645f;border-radius:12px;padding:12px 14px;margin-top:14px;background:#fff6f5;}
+  .heat-emg-h{color:#c0342c;font-weight:800;font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .heat-emg-h svg.i{width:17px;height:17px;stroke:#c0342c;}
+  .heat-emg-b{font-size:13px;color:#333;line-height:1.75;}
+  .heat-emg-b .r{color:#c0342c;font-weight:700;}
   .cmp-intro{font-size:12.5px;line-height:1.6;color:#3f4d41;background:#f6faf3;border:1px solid #dfeed6;border-radius:12px;padding:12px 14px;margin-bottom:14px;}
   .cmp-item{background:#fff;border:1px solid #eef2ec;border-radius:14px;padding:14px 15px;margin-bottom:12px;box-shadow:0 3px 10px rgba(31,45,33,.05);}
   .cmp-h{font-size:14px;font-weight:800;color:#0b6f28;line-height:1.35;}
@@ -323,7 +329,7 @@
   <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4.5" rx="1.2"/><path d="M5 8.5V20h14V8.5"/><path d="M10 12.5h4"/></symbol>
   <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 3 10.5l7 2.5 2.5 7z"/><path d="M21 3 10 13"/></symbol>
-  <symbol id="i-health" viewBox="0 0 24 24"><path d="M12 20s-6.5-4.2-9-8.2C1.3 9 2.6 5.8 6 5.8c2 0 3.2 1.3 4 2.4.8-1.1 2-2.4 4-2.4 3.4 0 4.7 3.2 3 6-2.5 4-9 8.2-9 8.2z"/><path d="M6.5 11.4h2.4l1.1-1.7 1.7 3.3 1.1-1.6H17.5"/></symbol>
+  <symbol id="i-health" viewBox="0 0 24 24"><path d="M12 20.3l-1.45-1.32C5.4 14.24 2 11.16 2 7.8 2 5.05 4.05 3 6.8 3c1.55 0 3.04.72 4 1.86l1.2 1.4 1.2-1.4c.96-1.14 2.45-1.86 4-1.86C20.15 3 22.2 5.05 22.2 7.8c0 3.36-3.4 6.44-8.75 11.19L12 20.3z"/><path d="M5.5 12h3l1.4-2.2 1.9 4 1.3-1.8H18.5"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3.6 2.1"/></symbol>
   <symbol id="i-tv" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8.5 21h7"/><path d="M12 17v4"/></symbol>
   <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.05-4.95"/><path d="M19.5 4v4h-4"/></symbol>
@@ -581,7 +587,17 @@
     },
     heat:{ title:'온열질환 예방수칙', html:
       '<div class="doc">'+
-      '<a class="doc-sign" href="https://visionspeaker.github.io/edu-sign/?gs=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbzTLmcyfQcL56Yo4K04FMMPHsU-WieAzugyVeV9V2ybeQug00_LIf92vG2o6McYbJM%2Fexec&amp;t=adhoc" target="_blank" rel="noopener"><svg class="i"><use href="#i-pen"/></svg>수시교육 서명하기</a>'+
+      '<a class="doc-sign red" href="https://visionspeaker.github.io/edu-sign/?gs=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbzTLmcyfQcL56Yo4K04FMMPHsU-WieAzugyVeV9V2ybeQug00_LIf92vG2o6McYbJM%2Fexec&amp;t=adhoc" target="_blank" rel="noopener"><svg class="i"><use href="#i-pen"/></svg>수시교육 서명하기</a>'+
+      '<div class="heat-emg">'+
+        '<div class="heat-emg-h"><svg class="i"><use href="#i-alert"/></svg>온열질환 응급조치 요령</div>'+
+        '<div class="heat-emg-b">'+
+          '<b>증상</b> : 평소보다 높은 체온·땀 많이 흘림·어지러움·메스꺼움·근육 경련·의식 저하<br>'+
+          '① 시원한 장소로 이동<br>'+
+          '② 옷을 헐렁하게 하고 시원한 물을 적셔 부채·선풍기 등으로 몸을 식힘<br>'+
+          '③ 시원한 물로 수분 보충 <span class="r">(※ 의식이 없을 경우 수분섭취 절대 금지)</span><br>'+
+          '④ 휴식 또는 의료 도움 — <span class="r">의식이 없거나 증상 개선이 없으면 즉시 119 신고</span>'+
+        '</div>'+
+      '</div>'+
       '<div class="doc-h" style="font-size:14px;letter-spacing:1px;">폭염으로 인한 온열질환 예방수칙</div>'+
       '<img class="doc-img" alt="온열질환 예방수칙 1면" src="./heat-1.jpg">'+
       '<img class="doc-img" alt="온열질환 예방수칙 2면" src="./heat-2.jpg">'+
