@@ -276,6 +276,10 @@
   .doc-img{width:100%;display:block;border:1px solid var(--line);border-radius:10px;margin-top:14px;box-shadow:0 3px 10px rgba(31,45,33,.06);}
   .doc-sign{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--g);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px;border-radius:14px;box-shadow:0 6px 16px rgba(26,166,58,.3);margin-bottom:4px;}
   .doc-sign svg.i{width:19px;height:19px;stroke:#fff;}
+  .todaybox{background:#eaf6ea;border:1px solid #bfe3c2;border-radius:12px;padding:12px 13px;margin-bottom:14px;}
+  .todaybox-h{display:flex;align-items:center;gap:7px;color:#1a7a34;font-weight:800;font-size:14px;margin-bottom:6px;}
+  .todaybox-h svg.i{width:18px;height:18px;stroke:#1a7a34;stroke-width:2.4;}
+  .todaybox-b{font-size:12.5px;color:#2f6d3a;line-height:1.7;}
   .doc-sign.red{background:#e0645f;box-shadow:0 6px 16px rgba(224,100,95,.3);}
   .heat-emg{border:2px solid #e0645f;border-radius:12px;padding:12px 14px;margin-top:14px;background:#fff6f5;}
   .heat-emg-h{color:#c0342c;font-weight:800;font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
@@ -344,6 +348,7 @@
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.3"/><path d="M12 2.5v2.3M12 19.2v2.3M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.3M19.2 12h2.3M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></symbol>
   <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 14.8V5.5a2 2 0 0 0-4 0v9.3a4 4 0 1 0 4 0z"/><path d="M12 15V9"/></symbol>
   <symbol id="i-link" viewBox="0 0 24 24"><path d="M9.5 14.5l5-5"/><path d="M10.8 7.2l1.7-1.7a3.8 3.8 0 0 1 5.4 5.4l-1.7 1.7"/><path d="M13.2 16.8l-1.7 1.7a3.8 3.8 0 0 1-5.4-5.4l1.7-1.7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></symbol>
 </defs></svg>
 
 <!-- 히어로 -->
@@ -582,6 +587,8 @@
     }catch(e){ fb(); }
   }
   window.copyLink=copyLink;
+  function ymd(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function hm(d){ return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2); }
   try{
     console.log('%c한양전공(주) 임직원 앱','font-size:20px;font-weight:800;color:#1aa63a;');
     console.log('%cCopyright (c) 2026 HYELE. All rights reserved.','font-size:12px;color:#666;');
@@ -670,11 +677,11 @@
        {e:'entry.1557474683',t:'check',l:'법인인감증명서 선택 시',r:0,o:['원본','사본','대표이사 양정일 법인인감증명 추가']},
        {e:'entry.566884218',t:'para',l:'기타 요청사항',r:0}
      ]},
-   seoksik:{title:'석식 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLScu4Ng1GALcQfll4H5QV1oIZx_wwV9maIRUPGuykagDS-82-Q/formResponse',
+   seoksik:{title:'석식 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLScu4Ng1GALcQfll4H5QV1oIZx_wwV9maIRUPGuykagDS-82-Q/formResponse',review:1,todayKey:'hyele_seoksik',
      fields:[
        {e:'entry.1397279623',t:'select',l:'소속',r:1,o:['수배전 영업부','수배전 설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','한양이앤에스','기타']},
-       {e:'entry.1743373854',t:'para',l:'성명',r:0},
-       {e:'entry.113392709',t:'para',l:'취소요청',r:0}
+       {e:'entry.1743373854',t:'text',l:'성명',r:1},
+       {e:'entry.113392709',t:'para',l:'취소요청',r:0,ph:'신청 취소를 원하면 여기에 남겨주세요 (선택)'}
      ]},
    myeongham:{title:'명함 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLScBCOXTiG6gcqhPKgFhINsMy5IhutmfewaSD4bDu291TWfXCA/formResponse',
      fields:[
@@ -747,6 +754,16 @@
     detailStack.length=0; curDetail=null;
     var F=FORMS[key];
     var h='<div class="ff">';
+    if(F.todayKey){
+      try{
+        var recS=localStorage.getItem(F.todayKey);
+        if(recS){ var rec=JSON.parse(recS);
+          if(rec && rec.date===ymd(new Date())){
+            h+='<div class="todaybox"><div class="todaybox-h"><svg class="i"><use href="#i-check"/></svg>오늘 신청 완료</div><div class="todaybox-b">신청자 <b>'+esc(rec.name||'')+'</b>'+(rec.dept?' · '+esc(rec.dept):'')+'<br>신청 시각 <b>오늘 '+esc(rec.time||'')+'</b></div></div>';
+          }
+        }
+      }catch(e){}
+    }
     if(F.note)h+='<div class="note">'+esc(F.note)+'</div>';
     F.fields.forEach(function(f){
       h+='<label class="fl">'+esc(f.l)+(f.r?' <b>*</b>':'')+(f.s?'<s>'+esc(f.s)+'</s>':'')+'</label>';
@@ -861,6 +878,24 @@
       }
     }
     postGoogle(F.action,data);
+    if(F.todayKey){
+      try{
+        var cancelVal='', nm='', dp='';
+        for(var ri=0;ri<review.length;ri++){
+          var lab=review[ri][0], val=review[ri][1];
+          if(lab.indexOf('취소')>-1) cancelVal=val;
+          if(lab==='성명') nm=val;
+          if(lab==='소속') dp=val;
+        }
+        if(cancelVal && cancelVal.trim()){
+          localStorage.removeItem(F.todayKey);
+        } else {
+          var now=new Date();
+          localStorage.setItem(F.todayKey, JSON.stringify({date:ymd(now), time:hm(now), name:nm, dept:dp}));
+          review.push(['신청 시각','오늘 '+hm(now)]);
+        }
+      }catch(e){}
+    }
     if(F.review) ffReview(review); else ffSuccess();
   }
   function ffReview(rows){
