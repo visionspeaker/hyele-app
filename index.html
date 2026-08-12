@@ -245,7 +245,7 @@
   /* 아카이브 */
   .arch{padding:2px 2px 8px;}
   .arch-note{font-size:12px;line-height:1.6;color:#7a8a7c;background:#eef0f2;border:1px solid #e2e6e9;border-radius:12px;padding:11px 13px;margin-bottom:12px;}
-  .arch-item{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #eef2ec;border-radius:14px;padding:13px 14px;box-shadow:0 3px 10px rgba(31,45,33,.05);cursor:pointer;margin-bottom:10px;}
+  .arch-item{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #eef2ec;border-radius:14px;padding:13px 14px;box-shadow:0 3px 10px rgba(31,45,33,.05);cursor:pointer;margin-bottom:10px;text-decoration:none;color:var(--text);}
   .arch-item:active{transform:scale(.99);}
   .arch-ic{width:40px;height:40px;border-radius:12px;background:#eef0f2;color:#78838a;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .arch-tx{flex:1;min-width:0;display:flex;flex-direction:column;}
@@ -364,7 +364,7 @@
     <div class="grid">
       <a class="card" href="http://www.hyele.co.kr/" target="_blank" rel="noopener">
         <div class="icon t-green"><svg class="i"><use href="#i-build"/></svg></div>
-        <div class="title">회사 홈페이지</div>
+        <div class="title">홈페이지</div>
       </a>
       <a class="card" href="https://hyele.worpl.net/" target="_blank" rel="noopener">
         <div class="icon t-indigo"><svg class="i"><use href="#i-approve"/></svg></div>
@@ -439,14 +439,6 @@
       <div class="card" role="button" tabindex="0" onclick="openForm('bogeon')">
         <div class="icon t-pink"><svg class="i"><use href="#i-health"/></svg></div>
         <div class="title">보건상담 신청</div>
-      </div>
-      <a class="card" href="https://www.weatheri.co.kr/forecast/forecast01.php?rid=0203010203&k=1&a_name=%ED%8F%89%ED%83%9D" target="_blank" rel="noopener">
-        <div class="icon t-red"><svg class="i"><use href="#i-thermo"/></svg></div>
-        <div class="title">폭염특보</div>
-      </a>
-      <div class="card" role="button" tabindex="0" onclick="openDetail('heat')">
-        <div class="icon t-red"><svg class="i"><use href="#i-sun"/></svg></div>
-        <div class="title">온열질환<br>예방수칙</div>
       </div>
       <div class="card" role="button" tabindex="0" onclick="openForm('achasago')">
         <div class="icon t-orange"><svg class="i"><use href="#i-alert"/></svg></div>
@@ -596,7 +588,7 @@
   }catch(e){}
   const contents = {
     archive:{ title:'아카이브', html:
-      '<div class="arch"><div class="arch-note">안내·동의 기간이 종료된 메뉴를 모아둔 곳입니다. 내용은 계속 열람할 수 있습니다.</div><div class="arch-item" role="button" tabindex="0" onclick="openDetail(&quot;chwieop&quot;)"><span class="arch-ic"><svg class="i"><use href="#i-mega"/></svg></span><span class="arch-tx"><b>취업규칙 9차 개정 안내</b><span>동의 기간 종료 · 2026. 8. 1. 시행</span></span><span class="arch-ar">›</span></div><div class="arch-item" role="button" tabindex="0" onclick="openDetail(&quot;links&quot;)"><span class="arch-ic"><svg class="i"><use href="#i-link"/></svg></span><span class="arch-tx"><b>딥링크 목록</b><span>메뉴 바로가기 주소 복사</span></span><span class="arch-ar">›</span></div></div>'
+      '<div class="arch"><div class="arch-note">안내·동의 기간이 종료된 메뉴를 모아둔 곳입니다. 내용은 계속 열람할 수 있습니다.</div><div class="arch-item" role="button" tabindex="0" onclick="openDetail(&quot;chwieop&quot;)"><span class="arch-ic"><svg class="i"><use href="#i-mega"/></svg></span><span class="arch-tx"><b>취업규칙 9차 개정 안내</b><span>동의 기간 종료 · 2026. 8. 1. 시행</span></span><span class="arch-ar">›</span></div><div class="arch-item" role="button" tabindex="0" onclick="openDetail(&quot;heat&quot;)"><span class="arch-ic"><svg class="i"><use href="#i-sun"/></svg></span><span class="arch-tx"><b>온열질환 예방수칙</b><span>폭염 대비 예방수칙·응급조치</span></span><span class="arch-ar">›</span></div><a class="arch-item" href="https://www.weatheri.co.kr/forecast/forecast01.php?rid=0203010203&amp;k=1&amp;a_name=%ED%8F%89%ED%83%9D" target="_blank" rel="noopener"><span class="arch-ic"><svg class="i"><use href="#i-thermo"/></svg></span><span class="arch-tx"><b>폭염특보</b><span>평택 실시간 폭염특보 (외부 링크)</span></span><span class="arch-ar">›</span></a><div class="arch-item" role="button" tabindex="0" onclick="openDetail(&quot;links&quot;)"><span class="arch-ic"><svg class="i"><use href="#i-link"/></svg></span><span class="arch-tx"><b>딥링크 목록</b><span>메뉴 바로가기 주소 복사</span></span><span class="arch-ar">›</span></div></div>'
     },
     risk:{ title:'위험성평가 결과 공유', html:
       '<div class="doc">'+
@@ -980,8 +972,8 @@
     var DL_BASE='https://visionspeaker.github.io/hyele-app/';
     var DL_GROUPS=[
       ['홈',[['증명서 발급 신청','jeungmyeong'],['물품 구매 신청','mulpum'],['석식 신청','seoksik'],['명함 신청','myeongham'],['근무복 신청','geunmubok'],['우편업무 신청','upyeon'],['웰컴모니터 신청','welcome'],['초과근무 신청','chogwa']]],
-      ['안전보건',[['안전보건 경영방침·목표','safety'],['위험성평가 결과 공유','risk'],['보건상담 신청','bogeon'],['온열질환 예방수칙','heat'],['아차사고 접수','achasago'],['안전용품 신청','anjeon']]],
-      ['안내',[['취업규칙 9차 개정 안내','chwieop']]]
+      ['안전보건',[['안전보건 경영방침·목표','safety'],['위험성평가 결과 공유','risk'],['보건상담 신청','bogeon'],['아차사고 접수','achasago'],['안전용품 신청','anjeon']]],
+      ['안내(아카이브)',[['취업규칙 9차 개정 안내','chwieop'],['온열질환 예방수칙','heat']]]
     ];
     var dlh='<div class="dl"><div class="dl-note">복사를 눌러 공지·카톡·게시판에 붙여넣으면 그 메뉴가 바로 열립니다.</div>';
     DL_GROUPS.forEach(function(g){
@@ -1001,7 +993,7 @@
       var q = new URLSearchParams(location.search);
       var key = q.get('form') || q.get('menu') || (location.hash||'').replace('#','');
       if(!key) return;
-      var safetyKeys = ['achasago','anjeon','safety','risk','bogeon','heat'];
+      var safetyKeys = ['achasago','anjeon','safety','risk','bogeon'];
       if(safetyKeys.indexOf(key) >= 0 && window.switchTab){
         var b = document.querySelector('.tabbar button[data-page="page-safety"]');
         if(b) window.switchTab(b);
