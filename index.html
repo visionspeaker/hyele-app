@@ -906,7 +906,7 @@
     var fv=document.createElement('input'); fv.type='hidden'; fv.name='fvv'; fv.value='1'; frm.appendChild(fv);
     var ph=document.createElement('input'); ph.type='hidden'; ph.name='pageHistory'; ph.value='0'; frm.appendChild(ph);
     document.body.appendChild(frm); frm.submit();
-    setTimeout(function(){try{frm.remove();ifr.remove();}catch(e){}} ,6000);
+    setTimeout(function(){try{frm.remove();ifr.remove();}catch(e){}} ,15000);
   }
   function ffSuccess(){
     document.getElementById('detail-body').innerHTML='<div class="ok-wrap"><div style="width:66px;height:66px;border-radius:50%;background:#eaf6e4;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="34" height="34" fill="none" stroke="#1aa63a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18l7 7 14-15"/></svg></div><div style="font-size:18px;font-weight:800;">신청이 접수되었습니다</div><div style="font-size:13px;color:var(--sub);margin-top:8px;line-height:1.6;">입력하신 내용이 구글 스프레드시트에<br>저장되었습니다.</div><button class="subbtn" style="width:auto;padding:12px 26px;margin-top:24px;" onclick="closeDetail()">확인</button></div>';
