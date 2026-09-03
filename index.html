@@ -967,24 +967,33 @@
     });
   })();
 
-  // 딥링크 목록 (아카이브) 동적 생성
+  // 딥링크 목록 — 홈·안전보건 메뉴 타일에서 자동 생성 (열 때마다 최신, 하드코딩 없음)
   try{
     var DL_BASE='https://visionspeaker.github.io/hyele-app/';
-    var DL_GROUPS=[
-      ['홈',[['증명서 발급 신청','jeungmyeong'],['물품 구매 신청','mulpum'],['석식 신청','seoksik'],['명함 신청','myeongham'],['근무복 신청','geunmubok'],['우편업무 신청','upyeon'],['웰컴모니터 신청','welcome'],['초과근무 신청','chogwa']]],
-      ['안전보건',[['안전보건 경영방침·목표','safety'],['위험성평가 결과 공유','risk'],['보건상담 신청','bogeon'],['아차사고 접수','achasago'],['안전용품 신청','anjeon']]],
-      ['안내(아카이브)',[['취업규칙 9차 개정 안내','chwieop'],['온열질환 예방수칙','heat']]]
-    ];
-    var dlh='<div class="dl"><div class="dl-note">복사를 눌러 공지·카톡·게시판에 붙여넣으면 그 메뉴가 바로 열립니다.</div>';
-    DL_GROUPS.forEach(function(g){
-      dlh+='<div class="dl-grp">'+esc(g[0])+'</div>';
-      g[1].forEach(function(m){
-        var url=DL_BASE+'?form='+m[1];
-        dlh+='<div class="dl-row"><div class="dl-info"><div class="dl-name">'+esc(m[0])+'</div><div class="dl-url">'+esc(url)+'</div></div><button class="dl-copy" type="button" data-url="'+esc(url)+'" onclick="copyLink(this)">복사</button></div>';
+    window.buildLinksHtml=function(){
+      var groups=[['홈','#page-home'],['안전보건','#page-safety']];
+      var seen={};
+      var dlh='<div class="dl"><div class="dl-note">복사를 눌러 공지·카톡·게시판에 붙여넣으면 그 메뉴가 바로 열립니다.</div>';
+      groups.forEach(function(g){
+        var rows='';
+        Array.prototype.forEach.call(document.querySelectorAll(g[1]+' .card'),function(c){
+          var oc=c.getAttribute('onclick')||'';
+          var m=oc.match(/open(?:Form|Detail)\('([^']+)'\)/);
+          if(!m) return;                              // 외부 링크(a.card) 제외
+          var key=m[1];
+          if(key==='archive'||key==='links') return;  // 컨테이너·자기 자신 제외
+          var tEl=c.querySelector('.title');
+          var name=(tEl?tEl.innerHTML:'').replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+          var url=DL_BASE+'?form='+key;
+          if(seen[url]) return; seen[url]=1;           // 중복 방지(멱등)
+          rows+='<div class="dl-row"><div class="dl-info"><div class="dl-name">'+esc(name)+'</div><div class="dl-url">'+esc(url)+'</div></div><button class="dl-copy" type="button" data-url="'+esc(url)+'" onclick="copyLink(this)">복사</button></div>';
+        });
+        if(rows) dlh+='<div class="dl-grp">'+esc(g[0])+'</div>'+rows;
       });
-    });
-    dlh+='</div>';
-    contents.links={ title:'딥링크 목록', html:dlh };
+      dlh+='</div>';
+      return dlh;
+    };
+    Object.defineProperty(contents,'links',{configurable:true,enumerable:true,get:function(){return {title:'딥링크 목록',html:window.buildLinksHtml()};}});
   }catch(e){}
 
   // 딥링크: ?form=키 (또는 #키) 로 특정 메뉴 바로 열기
