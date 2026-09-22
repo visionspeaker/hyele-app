@@ -1023,6 +1023,23 @@
     Object.defineProperty(contents,'links',{configurable:true,enumerable:true,get:function(){return {title:'딥링크 목록',html:window.buildLinksHtml()};}});
   }catch(e){}
 
+  // 인사평가 배너: 2026-09-23 23:00(KST) 이후 홈에서 숨기고 아카이브로 이동
+  (function(){
+    var CUT = Date.parse('2026-09-23T23:00:00+09:00');
+    function moved(){ return Date.now() >= CUT; }
+    var ARCHNOTE = '<div class="arch-note">안내·동의 기간이 종료된 메뉴를 모아둔 곳입니다. 내용은 계속 열람할 수 있습니다.</div>';
+    var EVALITEM = '<a class="arch-item" href="https://visionspeaker.github.io/hanyang-eval/" target="_blank" rel="noopener"><span class="arch-ic"><svg class="i"><use href="#i-approve"/></svg></span><span class="arch-tx"><b>2026년 하반기 인사평가</b><span>평가 기간 종료 · 포털 열람</span></span><span class="arch-ar">&rsaquo;</span></a>';
+    try{
+      var base = contents.archive.html;
+      Object.defineProperty(contents,'archive',{configurable:true,enumerable:true,get:function(){
+        return { title:'아카이브', html: moved()? base.replace(ARCHNOTE, ARCHNOTE+EVALITEM) : base };
+      }});
+    }catch(e){}
+    function apply(){ var b=document.querySelector('.evalbanner'); if(b) b.style.display = moved()?'none':''; }
+    apply();
+    document.addEventListener('visibilitychange', apply);
+  })();
+
   // 딥링크: ?form=키 (또는 #키) 로 특정 메뉴 바로 열기
   (function(){
     try{
