@@ -1035,7 +1035,7 @@
         return { title:'아카이브', html: moved()? base.replace(ARCHNOTE, ARCHNOTE+EVALITEM) : base };
       }});
     }catch(e){}
-    function apply(){ var b=document.querySelector('.evalbanner'); if(b) b.style.display = moved()?'none':''; }
+    function apply(){ var b=document.querySelector('.evalbanner'); if(b) b.style.display = moved()?'none':'flex'; }
     apply();
     document.addEventListener('visibilitychange', apply);
   })();
