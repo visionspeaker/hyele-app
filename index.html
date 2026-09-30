@@ -677,7 +677,7 @@
   }
 
   const FORMS = {
-   mulpum:{title:'물품 구매 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSd21n7XY9TU7mGC1WR7CRvahH6SbdAycrwI9hClox-GxS6jCQ/formResponse',
+   mulpum:{title:'물품 구매 신청',mode:'gas',type:'mulpum',confirm:1,action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      fields:[
        {e:'entry.432885470',t:'select',l:'부서',r:1,o:['경영지원부','설계부','생산관리부','품질보증부','부설연구소','신재생사업부','신사업부','영업부','수배전영업부','서울사무소','구조설계']},
        {e:'entry.1510892757',t:'text',l:'신청자',r:1},
@@ -685,7 +685,7 @@
        {e:'entry.327536592',t:'text',l:'수량',r:1,ph:'예: 2개'},
        {e:'entry.1492288375',t:'text',l:'모델 링크',r:0,ph:'구매 사이트 링크 (선택)'}
      ]},
-      jeungmyeong:{title:'증명서 발급 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSeUeaeFo-TYZZ5gUtgSB-J4wdGSccuwExQ_4y70X9RIBHwnzA/formResponse',
+      jeungmyeong:{title:'증명서 발급 신청',mode:'gas',type:'jeungmyeong',confirm:1,action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      note:'· 발급 기한을 반드시 기재해 주세요  · 증명서는 복수 선택 가능  · 원천징수영수증은 기타 요청사항에 발급년도 기재',
      fields:[
        {e:'entry.696604306',t:'text',l:'신청자',r:1},
@@ -702,7 +702,7 @@
        {e:'entry.1743373854',k:'성명',t:'text',l:'성명',r:1,ph:'실명으로 입력해 주세요.'},
        {e:'entry.113392709',k:'취소요청',t:'para',l:'취소요청',r:0,ph:'신청 취소를 원하면 여기에 남겨주세요 (선택)'}
      ]},
-   myeongham:{title:'명함 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLScBCOXTiG6gcqhPKgFhINsMy5IhutmfewaSD4bDu291TWfXCA/formResponse',
+   myeongham:{title:'명함 신청',mode:'gas',type:'myeongham',confirm:1,action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      fields:[
        {e:'entry.918185974',t:'text',l:'신청자',r:1},
        {e:'entry.107716282',t:'text',l:'영문 성명',r:1,ph:'예: Hong Gildong'},
@@ -722,19 +722,19 @@
        {e:'entry.1042218872',k:'신청 사유',t:'radio',l:'신청 사유',r:1,o:['신입직원 (입사 후 첫 신청)','옷이 낡음(훼손)'],other:1},
        {e:'entry.899820959',k:'기타 요청',t:'para',l:'기타 업무지원 요청 및 의견',r:0}
      ]},
-   upyeon:{title:'우편업무 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSfqW6pgOl0Kgi6n_hAkutaXP6w0R1JsH5zWxxXwF8HusAjerg/formResponse',
+   upyeon:{title:'우편업무 신청',mode:'gas',type:'upyeon',confirm:1,action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      fields:[
        {e:'entry.1707587513',t:'text',l:'신청자',r:1,ph:'성명'},
        {e:'entry.1159644275',t:'radio',l:'우편 종류',r:1,o:['빠른등기','일반등기','택배','일반우편']},
        {e:'entry.1904560369',t:'radio',l:'발송일',s:'긴급 발송이 아니면 2~3일 모아서 발송예정',r:1,o:['오늘(긴급)','내일 발송 가능'],other:1},
        {e:'entry.1642317690',t:'para',l:'받는사람 및 발송 목적',s:'지출결의용 정보',r:1,ph:'예) OO은행 등기, 계약서 원본 발송'}
      ]},
-   bogeon:{title:'보건상담 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSfbxzJlgH3N5w-gSBoeq2FmkeEC9d9DMRsqbmkrm73yahIzTw/formResponse',
+   bogeon:{title:'보건상담 신청',mode:'gas',type:'bogeon',confirm:1,action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      fields:[
        {e:'entry.2023422160',t:'select',l:'소속',r:1,o:['수배전 영업부','수배전 설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','경영지원부','한양이앤에스','기타']},
        {e:'entry.116916740',t:'text',l:'참석 희망자 성명',r:1}
      ]},
-   chogwa:{title:'초과근무 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSfN3cVgf_ZG2T54o0RK51YaRBC0U9H8z6pXmg7V0zGbSoPMSQ/formResponse',
+   chogwa:{title:'초과근무 신청',mode:'gas',type:'chogwa',confirm:1,action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      fields:[
        {e:'entry.342827633',t:'text',l:'성명',r:1},
        {e:'entry.868691722',t:'para',l:'업무내용',r:1,ph:'초과근무 사유·내용'},
@@ -759,7 +759,7 @@
        {e:'a_prev',k:'사고 예방 제안',t:'para',l:'사고 예방을 위한 제안',r:0,ph:'예) 통로 케이블 정리 및 덮개 설치'},
        {e:'a_photo',k:'photo',t:'photo',l:'현장 사진 (선택)',r:0}
      ]},
-   anjeon:{title:'안전용품 신청',action:'https://docs.google.com/forms/d/e/1FAIpQLSergqrXAqwlqGuhLlntkjzZWvAKMrICP79hK4VqPE6RbjVkzQ/formResponse',
+   anjeon:{title:'안전용품 신청',mode:'gas',type:'anjeon',confirm:1,action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      fields:[
        {e:'entry.957349961',t:'text',l:'신청자',r:1},
        {e:'entry.954388038',t:'select',l:'소속',r:1,o:['수배전 영업부','설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','경영지원실','기타']},
