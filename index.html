@@ -947,7 +947,7 @@ function ffSuccess(){
       var f=F.fields[i];
       if(f.t==='photo'){ photoField=f; continue; }
       var v='';
-      if(f.t==='radio'){ var on=body.querySelector('.chip.on[data-e="'+f.e+'"]'); v=on?on.dataset.v:''; }
+      if(f.t==='radio'){ var on=body.querySelector('.chip.on[data-e="'+f.e+'"]'); if(on&&on.dataset.other==='1'){ var ot=(body.querySelector('[data-other="'+f.e+'"]').value||'').trim(); if(f.r&&!ot)return ffErr(f.l+' (직접입력)'); v=ot; } else { v=on?on.dataset.v:''; } }
       else if(f.t==='check'){ var ons=body.querySelectorAll('.chip.on[data-e="'+f.e+'"]'); v=[].map.call(ons,function(c){return c.dataset.v;}).join(', '); }
       else { var el=body.querySelector('[data-e="'+f.e+'"]'); v=(el&&el.value||'').trim(); if(f.t==='datetime')v=v.replace('T',' '); }
       if(f.r&&!v) return ffErr(f.l);
