@@ -754,7 +754,7 @@
        {e:'entry.704405482',t:'dtrange',l:'송출 일시',r:1},
        {e:'entry.1728165854',t:'para',l:'기타 요청',r:0}
      ]},
-   achasago:{title:'아차사고 접수',mode:'gas',action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
+   achasago:{title:'아차사고 접수',mode:'gas',confirm:1,action:'https://script.google.com/macros/s/AKfycbzJRQZapzqqk4skzjzO_LWTGyDPxG5oAfnwesHGHl95cJyTQwB-YLW50Zq8E-kggzE/exec',
      note:'아차사고: 다칠 뻔했지만 다치지 않은 상황을 공유해 재해를 예방합니다. 현장 사진을 함께 첨부할 수 있습니다.',
      fields:[
        {e:'a_dept',k:'소속',t:'select',l:'소속',r:1,o:['수배전 영업부','수배전 설계부','생산관리부','품질보증부','신재생 영업부','부설연구소','경영지원/자재','한양이앤에스','기타']},
@@ -902,25 +902,27 @@
       }
     }
     postGoogle(F.action,data);
-    if(F.todayKey){
-      try{
-        var cancelVal='', nm='', dp='';
-        for(var ri=0;ri<review.length;ri++){
-          var lab=review[ri][0], val=review[ri][1];
-          if(lab.indexOf('취소')>-1) cancelVal=val;
-          if(lab==='성명') nm=val;
-          if(lab==='소속') dp=val;
-        }
-        if(cancelVal && cancelVal.trim()){
-          localStorage.removeItem(F.todayKey);
-        } else {
-          var now=new Date();
-          localStorage.setItem(F.todayKey, JSON.stringify({date:ymd(now), time:hm(now), name:nm, dept:dp}));
-          review.push(['신청 시각','오늘 '+hm(now)]);
-        }
-      }catch(e){}
-    }
+    saveToday(F,review);
     if(F.review) ffReview(review); else ffSuccess();
+  }
+  function saveToday(F,review){
+    if(!F.todayKey) return;
+    try{
+      var cancelVal='', nm='', dp='';
+      for(var ri=0;ri<review.length;ri++){
+        var lab=review[ri][0], val=review[ri][1];
+        if(lab.indexOf('취소')>-1) cancelVal=val;
+        if(lab==='성명') nm=val;
+        if(lab==='소속') dp=val;
+      }
+      if(cancelVal && cancelVal.trim()){
+        localStorage.removeItem(F.todayKey);
+      } else {
+        var now=new Date();
+        localStorage.setItem(F.todayKey, JSON.stringify({date:ymd(now), time:hm(now), name:nm, dept:dp}));
+        review.push(['신청 시각','오늘 '+hm(now)]);
+      }
+    }catch(e){}
   }
   function ffReview(rows){
     var h='<div class="ok-wrap"><div style="width:66px;height:66px;border-radius:50%;background:#eaf6e4;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="34" height="34" fill="none" stroke="#1aa63a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18l7 7 14-15"/></svg></div><div style="font-size:18px;font-weight:800;">신청이 접수되었습니다</div><div style="font-size:13px;color:var(--sub);margin-top:6px;">아래 내용으로 신청되었습니다.</div>';
@@ -947,7 +949,7 @@ function ffSuccess(){
   }
 
   function submitGas(key){
-    var F=FORMS[key], body=document.getElementById('detail-body'), payload={}, photoField=null;
+    var F=FORMS[key], body=document.getElementById('detail-body'), payload={}, review=[], photoField=null;
     for(var i=0;i<F.fields.length;i++){
       var f=F.fields[i];
       if(f.t==='photo'){ photoField=f; continue; }
@@ -957,11 +959,12 @@ function ffSuccess(){
       else { var el=body.querySelector('[data-e="'+f.e+'"]'); v=(el&&el.value||'').trim(); if(f.t==='datetime')v=v.replace('T',' '); }
       if(f.r&&!v) return ffErr(f.l);
       payload[f.k||f.l]=v;
+      if(v) review.push([f.l,v]);
     }
     var btn=document.getElementById('ffSub'); if(btn){btn.disabled=true;btn.textContent='제출 중…';}
     var fileInput=photoField?body.querySelector('.ffphoto-input[data-e="'+photoField.e+'"]'):null;
     var file=fileInput&&fileInput.files&&fileInput.files[0];
-    function send(){ if(F.type)payload.type=F.type; if(F.confirm){ fetch(F.action,{method:'POST',body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(j){ if(j&&j.ok){ffSuccess();} else {ffFail(FF_NOOK);} }).catch(function(){ffFail(FF_FAIL);}); } else { fetch(F.action,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}).then(function(){ffSuccess();}).catch(function(){ffSuccess();}); } }
+    function send(){ if(F.type)payload.type=F.type; if(F.confirm){ fetch(F.action,{method:'POST',body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(j){ if(j&&j.ok){ saveToday(F,review); if(F.review) ffReview(review); else ffSuccess(); } else {ffFail(FF_NOOK);} }).catch(function(){ffFail(FF_FAIL);}); } else { fetch(F.action,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}).then(function(){ffSuccess();}).catch(function(){ffSuccess();}); } }
     if(file){ compressImage(file,1600,0.7,function(durl){ var c=durl.indexOf(','); payload.imageBase64=durl.slice(c+1); payload.imageType='image/jpeg'; payload.imageName='achasago_'+Date.now()+'.jpg'; send(); }, send); }
     else { send(); }
   }
